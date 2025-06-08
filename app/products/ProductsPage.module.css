@@ -1,0 +1,124 @@
+.main {
+    padding: 0 0 40px 0;
+    min-height: 100vh;
+    background: #191919;
+}
+
+.heroSection {
+    text-align: center;
+    padding: 56px 5vw 32px 5vw;
+    background: linear-gradient(90deg, #232323 60%, #222244 100%);
+}
+
+.heading {
+    color: #ffd700;
+    font-size: 2.5rem;
+    margin-bottom: 12px;
+    letter-spacing: 1px;
+}
+
+.subheading {
+    color: #e0e0e0;
+    font-size: 1.15rem;
+    margin-bottom: 32px;
+}
+
+.brand {
+    color: #42a5f5;
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.highlights {
+    display: flex;
+    justify-content: center;
+    gap: 48px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+}
+
+.highlightItem {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #ffd700;
+    font-size: 1.1rem;
+    background: #232323;
+    padding: 12px 24px;
+    border-radius: 8px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+.highlightItem i {
+    font-size: 1.5rem;
+}
+
+.categoriesSection {
+    margin-top: 32px;
+}
+
+.categoriesHeading {
+    color: #ffd700;
+    text-align: center;
+    font-size: 1.6rem;
+    margin-bottom: 24px;
+    letter-spacing: 0.5px;
+}
+
+.categories {
+    display: flex;
+    gap: 32px;
+    justify-content: center;
+    align-items: stretch;
+    flex-wrap: wrap;
+}
+
+.categoryCard {
+    background: #232323;
+    color: #fff;
+    border-radius: 14px;
+    padding: 36px 44px 28px 44px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    border: 2px solid #ffd700;
+    transition: background 0.2s, color 0.2s, transform 0.15s;
+    text-align: center;
+    min-width: 220px;
+    max-width: 320px;
+    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.10);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.categoryCard:hover {
+    background: #ffd700;
+    color: #232323;
+    transform: translateY(-4px) scale(1.03);
+}
+
+
+.categoryName {
+    font-size: 1.4rem;
+    margin-bottom: 10px;
+    color: inherit;
+}
+
+.categoryDesc {
+    font-size: 1rem;
+    margin-bottom: 18px;
+    font-weight: normal;
+}
+
+.shopNow {
+    color: #42a5f5;
+    font-size: 1rem;
+    font-weight: bold;
+    margin-top: 8px;
+    transition: color 0.2s;
+}
+
+.categoryCard:hover .shopNow {
+    color: #232323;
+}

@@ -1,0 +1,75 @@
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px;
+    justify-content: flex-start;
+    align-items: stretch;
+    margin: 0 auto;
+    max-width: 1200px;
+    padding: 24px;
+    background-color: #f1f3ff;
+}
+
+.card {
+    background: #232323;
+    color: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    width: 260px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.10);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.card:hover {
+    transform: translateY(-4px) scale(1.03);
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.18);
+}
+
+.image {
+    width: 100%;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    background: #fff;
+}
+
+.name {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #ffd700;
+    text-align: center;
+}
+
+.description {
+    font-size: 0.98rem;
+    margin-bottom: 12px;
+    text-align: center;
+    color: #e0e0e0;
+}
+
+.price {
+    color: #ffd700;
+    font-weight: bold;
+    font-size: 1.08rem;
+    margin-bottom: 10px;
+}
+
+.button {
+    margin-top: 12px;
+    padding: 8px 16px;
+    background: #ffd700;
+    color: #222;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.button:hover {
+    background: #e6c200;
+}

@@ -1,0 +1,178 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  background-color: #1a237e;
+  /* new deep blue */
+  color: #fff;
+  ;
+  position: relative;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  /* Ensure vertical centering */
+  /* Remove height and width if not needed */
+}
+
+.loginLogo {
+  height: 74px;
+  /* or your preferred size */
+
+  /* ensures it doesn't overflow */
+  width: auto;
+  margin: 0;
+  display: block;
+}
+
+.nav {
+  display: flex;
+  list-style: none;
+  margin-right: 3rem;
+}
+
+.nav ul {
+  display: flex;
+  gap: 25px;
+  margin: 0;
+  padding: 0;
+}
+
+.nav ul li a,
+.dropdown_toggle {
+  color: white;
+  text-decoration: none;
+  background: none;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.dropdown {
+  position: relative;
+}
+
+.dropdown-content {
+  position: absolute;
+  top: 100%;
+  background: #283593;
+  /* new dropdown blue */
+  padding: 10px 0;
+  border-radius: 4px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
+  min-width: 165px;
+}
+
+.dropdown-content a {
+  padding: 10px 20px;
+  color: white;
+  text-decoration: none;
+}
+
+.dropdown-content a:hover {
+  background-color: #3949ab;
+}
+
+/* lighter blue on hover 
+}
+
+.dropdown_toggle i {
+  margin-left: 6px;
+}
+
+/* Mobile styles */
+.hamburger {
+  display: none;
+  font-size: 1.8rem;
+  cursor: pointer;
+}
+
+.loginButton {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background-color 0.3s ease;
+}
+
+.logoutButton {
+  display: block;
+  width: 100%;
+  background: none;
+  border: none;
+  color: inherit;
+  text-align: left;
+  padding: 8px 16px;
+  font: inherit;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.logoutButton:hover {
+  background-color: #444;
+}
+
+.dropdownLabel {
+  font-weight: bold;
+  color: #42a5f5;
+  /* accent blue */
+  padding: 8px 20px 6px 20px;
+  border-bottom: 1px solid #42a5f5;
+  margin-bottom: 6px;
+  font-size: 1.05rem;
+  letter-spacing: 0.5px;
+}
+
+
+
+.accountDropdownContent .dropdownLabel {
+  font-size: 0.88rem;
+}
+
+.accountDropdownContent a {
+  font-size: 0.75rem !important;
+}
+
+.loginFormOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(20, 20, 20, 0.25);
+  backdrop-filter: blur(7px);
+  z-index: 1000;
+}
+
+
+@media (max-width: 768px) {
+  .hamburger {
+    display: block;
+  }
+
+  .nav {
+    display: none;
+    position: absolute;
+    top: 60px;
+    right: 0;
+    background: #222;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+
+  .nav ul {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .active {
+    display: flex;
+  }
+}
