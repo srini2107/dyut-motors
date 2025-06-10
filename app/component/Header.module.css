@@ -151,6 +151,15 @@
 
 
 @media (max-width: 768px) {
+  .loginLogo {
+    height: 54px;
+    /* or your preferred size */
+  
+    /* ensures it doesn't overflow */
+    width: auto;
+    margin: 0;
+    display: block;
+  }
   .hamburger {
     display: block;
   }
@@ -158,9 +167,9 @@
   .nav {
     display: none;
     position: absolute;
-    top: 60px;
-    right: 0;
-    background: #222;
+    top: 5rem;
+    left: 0;
+    background: #283593;
     width: 100%;
     flex-direction: column;
     align-items: center;

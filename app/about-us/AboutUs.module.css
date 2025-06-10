@@ -103,6 +103,11 @@
     flex-direction: column;
   }
 
+  .title {
+    font-size: 1.75rem;
+    
+  }
+
   .imageWrapper,
   .content {
     width: 100%;
