@@ -9,7 +9,7 @@ export default function Footer() {
         <div className={styles.left}>
           <div>
             <i className="bi bi-telephone-fill" style={{ marginRight: 8 }}></i>
-            +91-9876543210
+            +91-99018 20757
           </div>
           <div>
             <i className="bi bi-envelope-fill" style={{ marginRight: 8 }}></i>

@@ -1,107 +1,149 @@
 .topProducts {
-    padding: 48px 5vw 32px 5vw;
-    background-color: #dbdff1;
-    color: black;
-    height: 80vh;
+  padding: 2rem;
+  background-color: #dbdff1;
+  color: black;
 }
 
 .heading {
-    font-size: 2rem;
-    margin-bottom: 32px;
-    color: black;
-    text-align: center;
-    font-weight: bolder;
+  font-size: 2.2rem;
+  font-weight: 700;
+  text-align: center;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  color: #222;
+}
+
+.subheading {
+  font-size: 1.1rem;
+  text-align: center;
+  color: #666;
+  margin-bottom: 1rem;
+  padding: 0 1rem;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.description {
+  padding-left: 1.5rem;
+  margin: 2rem auto;
+  max-width: 900px;
+  list-style: none;
+  color: black;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.description li {
+  margin-bottom: 1.2rem;
+  position: relative;
+  padding-left: 1.8rem;
+  text-indent: -1.8rem;
+}
+
+.description span {
+  color: black;
+  font-weight: bold;
+  font-size: 1.4rem;
 }
 
 .galleryWrapper {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  margin-bottom: 2rem;
 }
 
 .arrowBtn {
-    background: rgba(0, 0, 0, 0.4);
-    color: #ffd700;
-    border: none;
-    border-radius: 50%;
-    width: 38px;
-    height: 38px;
-    font-size: 1.5rem;
-    cursor: pointer;
-    margin: 0 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background 0.2s;
+  background: rgba(0, 0, 0, 0.4);
+  color: #ffd700;
+  border: none;
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  margin: 0 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
 }
 
 .arrowBtn:hover {
-    background: #ffd700;
-    color: #222;
+  background: #ffd700;
+  color: #222;
 }
 
 .galleryWindow {
-    overflow: hidden;
-    width: 950px;
-    /* 3 cards * 300px each, adjust as needed */
-    border-radius: 12px;
+  overflow: hidden;
+  width: 950px;
+  /* 3 cards * 300px each, adjust as needed */
+  border-radius: 12px;
 }
 
 .galleryTrack {
-    display: flex;
-    transition: transform 0.6s cubic-bezier(.77, 0, .18, 1);
-    width: 100%;
+  display: flex;
+  transition: transform 0.6s cubic-bezier(0.77, 0, 0.18, 1);
+  width: 100%;
 }
 
 .productCard {
-    background-color: #babbc6;
-    border-radius: 12px;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
-    width: 300px;
-    min-width: 300px;
-    margin: 0 12px;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    transition: transform 0.2s;
+  background-color: #babbc6;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
+  width: 300px;
+  min-width: 300px;
+  margin: 0 12px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.2s;
 }
 
 .productImage {
-    width: 150px;
-    height: 120px;
-    object-fit: contain;
-    margin-bottom: 18px;
-    border-radius: 8px;
-    background: #fff;
+  width: 150px;
+  height: 120px;
+  object-fit: contain;
+  margin-bottom: 18px;
+  border-radius: 8px;
+  background: #fff;
 }
 
 .productInfo {
-    text-align: center;
+  text-align: center;
 }
 
 .productName {
-    font-size: 1.15rem;
-    font-weight: bold;
-    margin-bottom: 6px;
+  font-size: 1.15rem;
+  font-weight: bold;
+  margin-bottom: 6px;
 }
 
 .productCategory {
-    font-size: 0.95rem;
-    color: #ffd700;
-    margin-bottom: 8px;
-    display: block;
+  font-size: 0.95rem;
+  color: #ffd700;
+  margin-bottom: 8px;
+  display: block;
 }
 
 .productDesc {
-    font-size: 0.98rem;
-    margin-bottom: 12px;
-    color: black;
+  font-size: 0.98rem;
+  margin-bottom: 12px;
+  color: black;
 }
 
 .productPrice {
-    font-size: 1.1rem;
-    font-weight: bold;
-    color: #ffd700;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #ffd700;
+}
+
+@media (max-width: 768px) {
+  .topProducts {
+    flex-direction: column;
+    padding: 1rem;
+  }
 }

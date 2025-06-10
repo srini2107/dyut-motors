@@ -1,15 +1,15 @@
-'use client';
-import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import styles from './Hero.module.css';
+"use client";
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import styles from "./Hero.module.css";
 
 const images = [
-  '/img2.jpg',
-  '/img3.jpg',
-  '/img4.jpg',
-  '/img5.jpg',
-  '/img6.jpg',
-  '/img7.jpg',
+ 
+  "/img9.png",
+  "/img10.png",
+  "/img11.png",
+  "/img12.png",
+  "/img13.png",
 ];
 
 export default function Hero() {
@@ -17,7 +17,8 @@ export default function Hero() {
   const router = useRouter();
 
   const nextImage = () => setCurrent((prev) => (prev + 1) % images.length);
-  const prevImage = () => setCurrent((prev) => (prev - 1 + images.length) % images.length);
+  const prevImage = () =>
+    setCurrent((prev) => (prev - 1 + images.length) % images.length);
 
   // auto-slide effect
   useEffect(() => {
@@ -33,32 +34,58 @@ export default function Hero() {
         <h1 className={styles.subtitle1}>Welcome to Dyut Motors</h1>
         <h3 className={styles.subtitle}>Innovating Electric Mobility</h3>
         <p className={styles.subtitle2}>
-          Discover high-performance motors, propellers, and avionics for your next project.
-          We deliver quality, reliability, and efficiency for all your electric vehicle needs.
+          Discover high-performance motors, propellers, and avionics for your
+          next project. We deliver quality, reliability, and efficiency for all
+          your electric vehicle needs.
         </p>
-        <h1 className={styles.subtitle1}>Made in India | Supporting the Atmanirbhar Bharat Mission</h1>
+        <h1 className={styles.subtitle4}>
+          UNMANNED <span>TECH</span>
+        </h1>
+        <h1 className={styles.subtitle1}>
+          Made in India | Supporting the Atmanirbhar Bharat Mission
+        </h1>
+
         <ul className={styles.features}>
-          <li><i className="bi bi-check-circle"></i> Premium Quality Components</li>
-          <li><i className="bi bi-check-circle"></i> Fast Shipping</li>
-          <li><i className="bi bi-check-circle"></i> Expert Support</li>
+          <li>
+            <i className="bi bi-check-circle"></i> Premium Quality Components
+          </li>
+          <li>
+            <i className="bi bi-check-circle"></i> Fast Shipping
+          </li>
+          <li>
+            <i className="bi bi-check-circle"></i> Expert Support
+          </li>
+          <li>
+            <i className="bi bi-check-circle"></i> World-class Engineering
+          </li>
         </ul>
+        <p className={styles.subtitle5}>
+          Join us in revolutionizing the future of electric mobility. Explore
+          our range of products designed for performance and efficiency.
+        </p>
         <div className={styles.ctaGroup}>
           <button
             className={styles.cta}
-            onClick={() => router.push('/products')}
+            onClick={() => router.push("/products")}
           >
             Shop Now
           </button>
           <button
             className={styles.secondaryCta}
-            onClick={() => router.push('/about-us')}
+            onClick={() => router.push("/about-us")}
           >
             Learn More
           </button>
         </div>
       </div>
       <div className={styles.right}>
-        <button className={styles.sliderBtn} onClick={prevImage} aria-label="Previous">&#8592;</button>
+        <button
+          className={styles.sliderBtn}
+          onClick={prevImage}
+          aria-label="Previous"
+        >
+          &#8592;
+        </button>
         <div className={styles.sliderWindow}>
           <div
             className={styles.sliderTrack}
@@ -74,7 +101,13 @@ export default function Hero() {
             ))}
           </div>
         </div>
-        <button className={styles.sliderBtn} onClick={nextImage} aria-label="Next">&#8594;</button>
+        <button
+          className={styles.sliderBtn}
+          onClick={nextImage}
+          aria-label="Next"
+        >
+          &#8594;
+        </button>
       </div>
     </section>
   );
