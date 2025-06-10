@@ -105,7 +105,6 @@
 
   .title {
     font-size: 1.75rem;
-    
   }
 
   .imageWrapper,
@@ -120,5 +119,29 @@
 
   .paragraph {
     margin-bottom: 1rem;
+  }
+}
+
+@media (max-width: 760px) {
+  .row {
+    flex-direction: column;
+  }
+
+  .title {
+    font-size: 1rem;
+  }
+
+  .imageWrapper,
+  .content {
+    width: 100%;
+    padding: 1rem 0.75rem;
+  }
+
+  .image {
+    min-height: 5rem;
+  }
+
+  .paragraph {
+    margin-bottom: 0.75rem;
   }
 }

@@ -146,4 +146,20 @@
     flex-direction: column;
     padding: 1rem;
   }
+
+  .arrowBtn {
+    background: rgba(0, 0, 0, 0.4);
+    color: #ffd700;
+    border: none;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    margin: 0 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+  }
 }

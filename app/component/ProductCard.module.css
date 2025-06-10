@@ -75,19 +75,18 @@
 }
 
 @media (max-width: 900px) {
-    .container {
-        flex-direction: column;
-        align-items: center;
+    .newFooterRow {
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
     }
-
-    .card {
-        width: 100%;
-        max-width: 400px;
-    }
-
-    .image {
-        height: 200px;
-        object-fit: cover;
+  
+    .left,
+    .center,
+    .right {
+      text-align: center;
+      justify-content: center;
+      flex: 1 1 auto;
     }
   
   }
