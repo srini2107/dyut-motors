@@ -2,15 +2,17 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styles from './Header.module.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import LoginForm from './LoginForm';
+import LoginForm from '../login/LoginForm';
 import Link from 'next/link';
+import { useAuth } from '../context/AuthContext';
 
 export default function Header() {
   const [openDropdown, setOpenDropdown] = useState(null); // "product", "account", or null
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [showLoginForm, setShowLoginForm] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { isLoggedIn, setShowLoginForm, showLoginForm, setIsLoggedIn } = useAuth();
   const [mobile, setMobile] = useState('');
+
+
 
   const productDropdownRef = useRef(null);
   const accountDropdownRef = useRef(null);
@@ -47,11 +49,9 @@ export default function Header() {
 
   const toggleLoginForm = () => setShowLoginForm(prev => !prev);
 
-  const handleLogin = () => {
-    if (mobile.trim()) {
-      setIsLoggedIn(true);
-      setShowLoginForm(false);
-    }
+  const handleLoginSuccess = () => {
+    setIsLoggedIn(true);
+    setShowLoginForm(false);
   };
 
   const handleLogout = () => {
@@ -140,15 +140,17 @@ export default function Header() {
       </header>
 
       {showLoginForm && !isLoggedIn && (
-        <>
-          <div className={styles.loginFormOverlay}></div>
-          <LoginForm
-            ref={loginFormRef}
-            mobile={mobile}
-            setMobile={setMobile}
-            onLogin={handleLogin}
-          />
-        </>
+
+
+        <LoginForm
+          ref={loginFormRef}
+          onLoginSuccess={() => {
+            setIsLoggedIn(true);
+            setShowLoginForm(false);
+          }}
+          onClose={() => setShowLoginForm(false)}
+        />
+
       )}
     </>
   );

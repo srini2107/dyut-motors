@@ -20,8 +20,17 @@
   :root {}
 }
 
-body {
-  background: var(--primary-bg);
-  color: var(--text);
-  font-family: Arial, Helvetica, sans-serif;
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
 }
+*{
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: var(--primary-bg);
+  color: var(--text);
+} 

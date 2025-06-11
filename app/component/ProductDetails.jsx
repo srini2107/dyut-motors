@@ -1,11 +1,30 @@
 import { useRouter } from 'next/navigation';
 import styles from './ProductDetails.module.css';
+import React, { useState } from 'react';
+import { useAuth } from '../context/AuthContext';
 
 export default function ProductDetails({ product }) {
-    const router = useRouter(); // <-- Add this line
+    const { isLoggedIn, setShowLoginForm } = useAuth();
+    const [pendingBuy, setPendingBuy] = useState(false);
+
+    const router = useRouter();
     if (!product) {
         return <div style={{ color: '#fff', padding: 32 }}>Product not found.</div>;
     }
+
+    const handleBuyNow = () => {
+        if (!isLoggedIn) {
+            setShowLoginForm(true); // This will open the modal in Header.jsx
+            setPendingBuy(true);    // You can use this flag if you want to trigger buy after login
+        } else {
+            handleBuy();
+        }
+    };
+
+    const handleBuy = () => {
+        // Your buy logic here (e.g., add to cart, redirect to checkout, etc.)
+        alert("Proceeding to buy!");
+    };
 
     return (
         <main className={styles.main}>
@@ -25,7 +44,7 @@ export default function ProductDetails({ product }) {
                     <div className={styles.actions}>
                         <button
                             className={styles.buyButton}
-                            onClick={() => alert('Redirect to payment portal')}
+                            onClick={handleBuyNow}
                         >
                             Buy Now
                         </button>
@@ -37,7 +56,6 @@ export default function ProductDetails({ product }) {
                             Cancel
                         </button>
                     </div>
-
                 </div>
             </div>
         </main>

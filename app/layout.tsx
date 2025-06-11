@@ -3,6 +3,7 @@ import "./globals.css";
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import Header from "./component/Header";
 import Footer from './component/Footer';
+import { AuthProvider } from './context/AuthContext';
 
 
 
@@ -20,9 +21,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+        <AuthProvider>
         <Header />
         {children}
         <Footer />
+        </AuthProvider>
       </body>
     </html>
   );

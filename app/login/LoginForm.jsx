@@ -1,13 +1,12 @@
 "use client";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, forwardRef, useState } from "react";
 import styles from "./LoginForm.module.css";
 
-export default function LoginForm({ onLoginSuccess, onClose }) {
+const LoginForm = forwardRef(function LoginForm({ onLoginSuccess, onClose = () => {} }, ref) {
   const [mobile, setMobile] = useState("");
   const [otp, setOtp] = useState("");
   const [step, setStep] = useState("mobile"); // "mobile" or "otp"
   const [isLoading, setIsLoading] = useState(false);
-  const formRef = useRef(null);
 
   const validateMobile = (mobile) => /^\d{10}$/.test(mobile);
 
@@ -66,17 +65,21 @@ export default function LoginForm({ onLoginSuccess, onClose }) {
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (formRef.current && !formRef.current.contains(event.target)) {
+      if (ref && ref.current && !ref.current.contains(event.target)) {
         onClose(); // Close the login form
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [onClose]);
+  }, [onClose, ref]);
 
   return (
     <div className={styles.loginFormOverlay}>
-      <div className={styles.loginFormContainer} ref={formRef}>
+      <div
+        className={styles.loginFormContainer}
+        ref={ref}
+        onMouseDown={e => e.stopPropagation()}
+      >
         <img
           src="/img1.png"
           alt="Logo"
@@ -120,4 +123,6 @@ export default function LoginForm({ onLoginSuccess, onClose }) {
       </div>
     </div>
   );
-}
+});
+
+export default LoginForm;
