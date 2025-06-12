@@ -4,9 +4,9 @@ import { useRouter } from "next/navigation";
 import styles from "./Hero.module.css";
 
 const images = [
- 
-  "/img9.png",
-  "/img10.png",
+
+  "/drone1.jpg",
+  "/drone2.jpg",
   "/img11.png",
   "/img12.png",
   "/img13.png",
@@ -38,12 +38,17 @@ export default function Hero() {
           next project. We deliver quality, reliability, and efficiency for all
           your electric vehicle needs.
         </p>
-        <h1 className={styles.subtitle4}>
-          UNMANNED <span>TECH</span>
-        </h1>
+
         <h1 className={styles.subtitle1}>
-          Made in India | Supporting the Atmanirbhar Bharat Mission
+
+          <img
+            src="/make1.jpg"
+            alt="Make in India"
+            className={styles.makeInIndiaImg}
+          />
+          <span>Make in India  | Supporting the Atmanirbhar Bharat Mission</span>
         </h1>
+
 
         <ul className={styles.features}>
           <li>
@@ -63,6 +68,9 @@ export default function Hero() {
           Join us in revolutionizing the future of electric mobility. Explore
           our range of products designed for performance and efficiency.
         </p>
+        <h1 className={styles.subtitle4}>
+          UNMANNED <span>TECH</span>
+        </h1>
         <div className={styles.ctaGroup}>
           <button
             className={styles.cta}
@@ -76,7 +84,9 @@ export default function Hero() {
           >
             Learn More
           </button>
+
         </div>
+
       </div>
       <div className={styles.right}>
         <button

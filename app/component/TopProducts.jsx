@@ -29,14 +29,14 @@ const products = [
     category: "Motor",
     description: "Compact, efficient motor for lightweight applications.",
     price: "₹6,500",
-    image: "/img12.png",
+    image: "/prope1.jpg",
   },
   {
     name: "Precision Propeller",
     category: "Propeller",
     description: "Balanced for smooth, quiet operation and long life.",
     price: "₹2,200",
-    image: "/img13.png",
+    image: "/prop2.jpg",
   },
 ];
 
@@ -49,7 +49,7 @@ export default function TopProducts() {
   const prev = () =>
     setCurrent((prev) => (prev - 1 + products.length) % products.length);
 
-  // Auto-slide effect
+  //Auto-slide effect
   // useEffect(() => {
   //   const interval = setInterval(next, 3500);
   //   return () => clearInterval(interval);
