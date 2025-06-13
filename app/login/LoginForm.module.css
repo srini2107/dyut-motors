@@ -1,115 +1,86 @@
-.loginFormContainer {
-  background-color: #f1f3ff;
-  color: BLACK;
-  padding: 45px;
-  max-width: 420px;
-  max-height: 320px;
-  margin: 20px auto;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-  position: fixed;
-  top: 40%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 2000;
-  text-align: center;
-  /* higher than nav */
-
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.loginFormContainer h5 {
-  margin-bottom: 15px;
-  font-size: 0.89rem;
+.popup {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+    padding: 2.5rem 2rem 2rem 2rem;
+    min-width: 320px;
+    max-width: 95vw;
+    width: 350px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-.loginFormContainer input {
-  width: 100%;
-  padding: 10px;
-
-  border: none;
-  border-radius: 4px;
+.form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-.loginFormContainer button {
-  width: 100%;
-  padding: 10px;
-  background-color: #0d6efd;
-  border: none;
-  color: white;
-  font-weight: bold;
-  border-radius: 4px;
-  cursor: pointer;
+.form h2 {
+    margin-bottom: 1.5rem;
+    color: #0d6efd;
+    font-size: 1.5rem;
+    font-weight: 700;
 }
 
-.loginFormContainer button:hover {
-  background-color: #0b5ed7;
+.input {
+    width: 100%;
+    padding: 0.6rem;
+    border-radius: 6px;
+    border: 1px solid #e0e0e0;
+    font-size: 1rem;
+    outline: none;
+    margin-bottom: 1rem;
 }
 
-/* Add to LoginForm.module.css */
-.loginFormOverlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 1999;
-
+.btn {
+    width: 100%;
+    padding: 0.7rem;
+    background: #0d6efd;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 0.5rem;
+    transition: background 0.2s;
 }
 
-.loginLogo {
-  display: block;
-  margin: 0 auto 10px auto;
-  width: 75px;
-  height: 75px;
-  object-fit: contain;
+.btn:disabled {
+    background: #b3d1fc;
+    cursor: not-allowed;
 }
 
-.mobileInputWrapper {
-  display: flex;
-  align-items: center;
-  margin-bottom: 15px;
+.forgot {
+    width: 100%;
+    text-align: right;
+    margin-top: 0.5rem;
 }
 
-.stdCode {
-  background: #222;
-  color: #fff;
-  padding: 10px 12px;
-  border-radius: 4px 0 0 4px;
-  font-size: 1rem;
-  border: none;
+.forgot a {
+    color: #0d6efd;
+    text-decoration: none;
+    font-size: 0.95rem;
+    cursor: pointer;
 }
 
-.mobileInput {
-  flex: 1;
-  padding: 10px;
-  border: none;
-  border-radius: 0 4px 4px 0;
-  font-size: 1rem;
-  pointer-events: auto;
-  /* Make sure it's not set to 'none' */
-  background-color: white;
-  /* Not transparent over white? */
-  z-index: 10;
-}
-
-@media (max-width: 900px) {
-  .loginFormContainer {
-    width: 90%;
-    max-width: 400px;
-    padding: 20px;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-
-  .loginLogo {
-    width: 60px;
-    height: 60px;
-  }
-
-  .loginFormContainer h5 {
-    font-size: 0.85rem;
-  }
-
+.input::placeholder {
+    color: #888;
+    opacity: 1;
 }

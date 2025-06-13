@@ -1,29 +1,26 @@
-import db from "./../../lib/db";
+// import db from "./../../lib/db";
+// import { NextResponse } from "next/server";
 
-export async function POST(req) {
-  const { mobile, otp } = await req.json();
+// export async function POST(req) {
+//   const { mobile, email, otp } = await req.json();
+//   let result;
+//   if (mobile) {
+//     [result] = await db.query(
+//       "SELECT * FROM otps WHERE mobile = ? AND otp = ? AND created_at > NOW() - INTERVAL 5 MINUTE",
+//       [mobile, otp]
+//     );
+//   } else if (email) {
+//     [result] = await db.query(
+//       "SELECT * FROM otps WHERE email = ? AND otp = ? AND created_at > NOW() - INTERVAL 5 MINUTE",
+//       [email, otp]
+//     );
+//   } else {
+//     return NextResponse.json({ success: false, error: "Mobile or email required." }, { status: 400 });
+//   }
 
-  if (!mobile || !otp) {
-    return Response.json({ error: "Missing input" }, { status: 400 });
-  }
-
-  try {
-    const [rows] = await db.execute(
-      `SELECT * FROM otps WHERE mobile = ? AND otp = ? AND created_at > NOW()`,
-      [mobile, otp]
-    );
-
-    if (rows.length === 0) {
-      return Response.json(
-        { error: "Invalid or expired OTP" },
-        { status: 401 }
-      );
-    }
-
-    // Successful login
-    return Response.json({ message: "Login successful" });
-  } catch (err) {
-    console.error(err);
-    return Response.json({ error: "Server error" }, { status: 500 });
-  }
-}
+//   if (result && result.length > 0) {
+//     return NextResponse.json({ success: true });
+//   } else {
+//     return NextResponse.json({ success: false, error: "Invalid or expired OTP." }, { status: 401 });
+//   }
+// }

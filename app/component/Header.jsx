@@ -2,9 +2,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styles from './Header.module.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import LoginForm from '../login/LoginForm';
 import Link from 'next/link';
 import { useAuth } from '../context/AuthContext';
+import LoginForm from '../login/LoginForm';
 
 export default function Header() {
   const [openDropdown, setOpenDropdown] = useState(null); // "product", "account", or null
@@ -143,7 +143,7 @@ export default function Header() {
 
 
         <LoginForm
-          ref={loginFormRef}
+          
           onLoginSuccess={() => {
             setIsLoggedIn(true);
             setShowLoginForm(false);

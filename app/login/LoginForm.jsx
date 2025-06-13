@@ -1,128 +1,166 @@
-"use client";
-import React, { useEffect, forwardRef, useState } from "react";
-import styles from "./LoginForm.module.css";
+'use client';
+import React, { useState } from 'react';
+import styles from './LoginForm.module.css';
 
-const LoginForm = forwardRef(function LoginForm({ onLoginSuccess, onClose = () => {} }, ref) {
-  const [mobile, setMobile] = useState("");
-  const [otp, setOtp] = useState("");
-  const [step, setStep] = useState("mobile"); // "mobile" or "otp"
+export default function LoginForm({ onSignupSuccess, onLoginSuccess }) {
+  const [step, setStep] = useState('signup'); // 'signup' or 'login'
+  const [signupData, setSignupData] = useState({
+    name: '',
+    username: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+  });
+  const [loginData, setLoginData] = useState({
+    userOrEmail: '',
+    password: '',
+  });
   const [isLoading, setIsLoading] = useState(false);
 
-  const validateMobile = (mobile) => /^\d{10}$/.test(mobile);
+  // Handle signup field changes
+  const handleSignupChange = e => {
+    setSignupData({ ...signupData, [e.target.name]: e.target.value });
+  };
 
-  const handleSendOtp = async () => {
-    if (!validateMobile(mobile)) {
-      alert("Please enter a valid 10-digit mobile number.");
+  // Handle login field changes
+  const handleLoginChange = e => {
+    setLoginData({ ...loginData, [e.target.name]: e.target.value });
+  };
+
+  // Signup submit
+  const handleSignup = async e => {
+    e.preventDefault();
+    if (signupData.password !== signupData.confirmPassword) {
+      alert("Passwords do not match!");
       return;
     }
     setIsLoading(true);
-    try {
-      const res = await fetch("/api/send-otp", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ mobile }),
-      });
-      if (res.ok) {
-        alert("OTP sent successfully!");
-        setStep("otp");
-      } else {
-        const errorData = await res.json();
-        alert(errorData.error || "Failed to send OTP.");
-      }
-    } catch (error) {
-      alert("Network error. Please try again.");
-    } finally {
-      setIsLoading(false);
+    // Call your signup API here
+    const res = await fetch('/api/signup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(signupData),
+    });
+    setIsLoading(false);
+    if (res.ok) {
+      setStep('login');
+      onSignupSuccess && onSignupSuccess();
+    } else {
+      const data = await res.json();
+      alert(data.error || 'Signup failed');
     }
   };
 
-  const handleVerifyOtp = async () => {
-    if (!otp.trim()) {
-      alert("Please enter the OTP.");
-      return;
-    }
+  // Login submit
+  const handleLogin = async e => {
+    e.preventDefault();
     setIsLoading(true);
-    try {
-      const res = await fetch("/api/verify-otp", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ mobile, otp }),
-      });
-      if (res.ok) {
-        alert("OTP verified successfully!");
-        localStorage.setItem("isLoggedIn", "true");
-        onLoginSuccess();
-      } else {
-        const errorData = await res.json();
-        alert(errorData.error || "Failed to verify OTP.");
-      }
-    } catch (error) {
-      alert("Network error. Please try again.");
-    } finally {
-      setIsLoading(false);
+    const res = await fetch('/api/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        username: loginData.userOrEmail,
+        email: loginData.userOrEmail,
+        password: loginData.password,
+      }),
+    });
+    setIsLoading(false);
+    const data = await res.json();
+    if (res.ok) {
+      onLoginSuccess && onLoginSuccess(data.user);
+    } else {
+      alert(data.error || 'Login failed');
+      // Optionally show "Forgot password?" here
     }
   };
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (ref && ref.current && !ref.current.contains(event.target)) {
-        onClose(); // Close the login form
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [onClose, ref]);
 
   return (
-    <div className={styles.loginFormOverlay}>
-      <div
-        className={styles.loginFormContainer}
-        ref={ref}
-        onMouseDown={e => e.stopPropagation()}
-      >
-        <img
-          src="/img1.png"
-          alt="Logo"
-          className={styles.loginLogo}
-        />
-        {step === "mobile" && (
-          <>
-            <h5>Login or Sign Up</h5>
-            <div className={styles.mobileInputWrapper}>
-              <span className={styles.stdCode}>+91</span>
-              <input
-                type="text"
-                placeholder="Enter Mobile Number"
-                value={mobile}
-                onChange={(e) => setMobile(e.target.value.replace(/[^0-9]/g, ""))}
-                maxLength={10}
-                className={styles.mobileInput}
-              />
-            </div>
-            <button onClick={handleSendOtp} disabled={isLoading}>
-              {isLoading ? "Sending OTP..." : "Send OTP"}
-            </button>
-          </>
-        )}
-        {step === "otp" && (
-          <>
-            <h5>Enter OTP</h5>
+    <div className={styles.overlay}>
+      <div className={styles.popup}>
+        {step === 'signup' ? (
+          <form className={styles.form} onSubmit={handleSignup}>
+            <h2>Sign Up</h2>
             <input
+              name="name"
               type="text"
-              placeholder="Enter OTP"
-              value={otp}
-              onChange={(e) => setOtp(e.target.value.replace(/[^0-9]/g, ""))}
-              maxLength={6}
-              className={styles.otpInput}
+              placeholder="Name"
+              value={signupData.name}
+              onChange={handleSignupChange}
+              required
+              className={styles.input}
             />
-            <button onClick={handleVerifyOtp} disabled={isLoading}>
-              {isLoading ? "Verifying..." : "Verify OTP"}
+            <input
+              name="username"
+              type="text"
+              placeholder="Username"
+              value={signupData.username}
+              onChange={handleSignupChange}
+              required
+              className={styles.input}
+            />
+            <input
+              name="email"
+              type="email"
+              placeholder="Email"
+              value={signupData.email}
+              onChange={handleSignupChange}
+              required
+              className={styles.input}
+            />
+            <input
+              name="password"
+              type="password"
+              placeholder="Password"
+              value={signupData.password}
+              onChange={handleSignupChange}
+              required
+              className={styles.input}
+            />
+            <input
+              name="confirmPassword"
+              type="password"
+              placeholder="Confirm Password"
+              value={signupData.confirmPassword}
+              onChange={handleSignupChange}
+              required
+              className={styles.input}
+            />
+            <button type="submit" className={styles.btn} disabled={isLoading}>
+              {isLoading ? 'Creating...' : 'Continue'}
             </button>
-          </>
+          </form>
+        ) : (
+          <form className={styles.form} onSubmit={handleLogin}>
+            <h2>Login</h2>
+            <input
+              name="userOrEmail"
+              type="text"
+              placeholder="Enter username or email"
+              value={loginData.userOrEmail}
+              onChange={handleLoginChange}
+              required
+              className={styles.input}
+            />
+            <input
+              name="password"
+              type="password"
+              placeholder="Password"
+              value={loginData.password}
+              onChange={handleLoginChange}
+              required
+              className={styles.input}
+            />
+            <button type="submit" className={styles.btn} disabled={isLoading}>
+              {isLoading ? 'Logging in...' : 'Login'}
+            </button>
+            <div className={styles.forgot}>
+              <a href="#" onClick={e => { e.preventDefault(); alert('Forgot password flow here!'); }}>
+                Forgot password?
+              </a>
+            </div>
+          </form>
         )}
       </div>
     </div>
   );
-});
-
-export default LoginForm;
+}
