@@ -4,6 +4,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import Header from "./component/Header";
 import Footer from './component/Footer';
 import { AuthProvider } from './context/AuthContext';
+// import TestForm from './component/TestForm'; // Removed as the module does not exist
 
 
 
@@ -23,6 +24,7 @@ export default function RootLayout({
       <body>
         <AuthProvider>
         <Header />
+        {/* <TestForm></TestForm> */} {/* Removed as the module does not exist */}
         {children}
         <Footer />
         </AuthProvider>

@@ -1,34 +1,17 @@
-'use client';
+import ProductDetails from "../../../component/ProductDetails";
 
-import { useParams } from 'next/navigation';
-import ProductDetails from '../../../component/ProductDetails';
+export default async function ProductPage({ params }) {
+  const { productId } = params;
 
-const productsByCategory = {
-    propellers: [
-        { id: 'p1', name: 'Carbon Fiber Propeller', price: 2500, image: '/img2.jpg', description: 'Lightweight, high-strength propeller.' },
-        { id: 'p2', name: 'Carbon Fiber Propeller', price: 2500, image: '/img3.jpg', description: 'Lightweight, high-strength propeller.' },
-        { id: 'p3', name: 'Carbon Fiber Propeller', price: 2500, image: '/img4.jpg', description: 'Lightweight, high-strength propeller.' },
-        { id: 'p4', name: 'Carbon Fiber Propeller', price: 2500, image: '/img5.jpg', description: 'Lightweight, high-strength propeller.' },
-    ],
-    motors: [
-        { id: 'm1', name: 'High Torque Motor', price: 7800, image: '/img6.jpg', description: 'Powerful brushless motor.' },
-        { id: 'm2', name: 'High Torque Motor', price: 7800, image: '/img6.jpg', description: 'Powerful brushless motor.' },
-        { id: 'm3', name: 'High Torque Motor', price: 7800, image: '/img6.jpg', description: 'Powerful brushless motor.' },
-        { id: 'm4', name: 'High Torque Motor', price: 7800, image: '/img6.jpg', description: 'Powerful brushless motor.' },
-    ],
-    avionics: [
-        { id: 'a1', name: 'Flight Controller', price: 5000, image: '/img8.jpg', description: 'Advanced avionics for drones.' },
-        { id: 'a2', name: 'Flight Controller', price: 5000, image: '/img8.jpg', description: 'Advanced avionics for drones.' },
-        { id: 'a3', name: 'Flight Controller', price: 5000, image: '/img8.jpg', description: 'Advanced avionics for drones.' },
-        { id: 'a4', name: 'Flight Controller', price: 5000, image: '/img8.jpg', description: 'Advanced avionics for drones.' },
-    ],
-};
+  console.log("Requested product ID:", productId);
 
-export default function ProductDetailsPage() {
-    const params = useParams();
-    const { category, productId } = params;
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/products/${productId}`);
+  if (!res.ok) {
+    console.error("Failed to fetch product:", res.statusText);
+    return <div>Error loading product details</div>;
+  }
 
-    const product = (productsByCategory[category] || []).find(p => p.id === productId);
+  const product = await res.json();
 
-    return <ProductDetails product={product} />;
+  return <ProductDetails product={product} />;
 }

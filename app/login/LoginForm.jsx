@@ -1,84 +1,108 @@
-'use client';
-import React, { useState } from 'react';
-import styles from './LoginForm.module.css';
+"use client";
+import React, { useState } from "react";
+import styles from "./LoginForm.module.css";
+import { useAuth } from "../context/AuthContext";
 
-export default function LoginForm({ onSignupSuccess, onLoginSuccess }) {
-  const [step, setStep] = useState('signup'); // 'signup' or 'login'
+export default function LoginForm({
+  loginFormRef,
+  onSignupSuccess,
+  onLoginSuccess,
+  children,
+}) {
+  const { setIsLoggedIn, setUserName } = useAuth();
+  const [step, setStep] = useState("login"); // 'signup' or 'login'
   const [signupData, setSignupData] = useState({
-    name: '',
-    username: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
+    name: "",
+    username: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
   });
   const [loginData, setLoginData] = useState({
-    userOrEmail: '',
-    password: '',
+    userOrEmail: "",
+    password: "",
   });
   const [isLoading, setIsLoading] = useState(false);
 
   // Handle signup field changes
-  const handleSignupChange = e => {
+  const handleSignupChange = (e) => {
+    console.log(e.target.name, e.target.value); // Debugging
     setSignupData({ ...signupData, [e.target.name]: e.target.value });
   };
 
   // Handle login field changes
-  const handleLoginChange = e => {
+  const handleLoginChange = (e) => {
     setLoginData({ ...loginData, [e.target.name]: e.target.value });
   };
 
   // Signup submit
-  const handleSignup = async e => {
+  const handleSignup = async (e) => {
     e.preventDefault();
+    console.log("Signup form submitted"); // Debugging
     if (signupData.password !== signupData.confirmPassword) {
       alert("Passwords do not match!");
       return;
     }
     setIsLoading(true);
     // Call your signup API here
-    const res = await fetch('/api/signup', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+    const res = await fetch("/api/signup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(signupData),
     });
     setIsLoading(false);
     if (res.ok) {
-      setStep('login');
+      setStep("login");
       onSignupSuccess && onSignupSuccess();
     } else {
       const data = await res.json();
-      alert(data.error || 'Signup failed');
+      alert(data.error || "Signup failed");
     }
   };
 
   // Login submit
-  const handleLogin = async e => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    const res = await fetch('/api/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+    if (!loginData.userOrEmail || !loginData.password) {
+      alert("Please enter both username/email and password.");
+      return;
+    }
+    console.log("Sending login data:", {
+      userOrEmail: loginData.userOrEmail,
+      password: loginData.password,
+    });
+    const res = await fetch("/api/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        username: loginData.userOrEmail,
-        email: loginData.userOrEmail,
+        userOrEmail: loginData.userOrEmail,
         password: loginData.password,
       }),
     });
     setIsLoading(false);
     const data = await res.json();
     if (res.ok) {
+      setIsLoggedIn(true);
+      setUserName(data.user.username); // Update userName in AuthContext
       onLoginSuccess && onLoginSuccess(data.user);
     } else {
-      alert(data.error || 'Login failed');
+      alert(data.error || "Login failed");
       // Optionally show "Forgot password?" here
     }
   };
 
   return (
-    <div className={styles.overlay}>
+    <div ref={loginFormRef} className={styles.overlay}>
       <div className={styles.popup}>
-        {step === 'signup' ? (
+        {step === "signup" ? (
           <form className={styles.form} onSubmit={handleSignup}>
+            <img
+              src="images/img1.png"
+              alt="Logo"
+              className={styles.signLogo}
+              style={{ cursor: 'pointer' }}
+            />
             <h2>Sign Up</h2>
             <input
               name="name"
@@ -126,7 +150,7 @@ export default function LoginForm({ onSignupSuccess, onLoginSuccess }) {
               className={styles.input}
             />
             <button type="submit" className={styles.btn} disabled={isLoading}>
-              {isLoading ? 'Creating...' : 'Continue'}
+              {isLoading ? "Creating..." : "Continue"}
             </button>
           </form>
         ) : (
@@ -137,7 +161,9 @@ export default function LoginForm({ onSignupSuccess, onLoginSuccess }) {
               type="text"
               placeholder="Enter username or email"
               value={loginData.userOrEmail}
-              onChange={handleLoginChange}
+              onChange={(e) =>
+                setLoginData({ ...loginData, userOrEmail: e.target.value })
+              }
               required
               className={styles.input}
             />
@@ -146,20 +172,41 @@ export default function LoginForm({ onSignupSuccess, onLoginSuccess }) {
               type="password"
               placeholder="Password"
               value={loginData.password}
-              onChange={handleLoginChange}
+              onChange={(e) =>
+                setLoginData({ ...loginData, password: e.target.value })
+              }
               required
               className={styles.input}
             />
             <button type="submit" className={styles.btn} disabled={isLoading}>
-              {isLoading ? 'Logging in...' : 'Login'}
+              {isLoading ? "Logging in..." : "Login"}
             </button>
+            <p className={styles.toggle}>
+              Don't have an account?{" "}
+              <a
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setStep("signup");
+                }}
+              >
+                Sign Up
+              </a>
+            </p>
             <div className={styles.forgot}>
-              <a href="#" onClick={e => { e.preventDefault(); alert('Forgot password flow here!'); }}>
+              <a
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  alert("Forgot password flow here!");
+                }}
+              >
                 Forgot password?
               </a>
             </div>
           </form>
         )}
+        {children} {/* Render the close button or any additional content */}
       </div>
     </div>
   );

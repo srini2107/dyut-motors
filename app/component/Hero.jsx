@@ -4,12 +4,11 @@ import { useRouter } from "next/navigation";
 import styles from "./Hero.module.css";
 
 const images = [
-
-  "/drone1.jpg",
-  "/drone2.jpg",
-  "/img11.png",
-  "/img12.png",
-  "/img13.png",
+  "/images/drone1.jpg",
+  "/images/drone2.jpg",
+  "/images/img11.png",
+  "/images/img12.png",
+  "/images/img13.png",
 ];
 
 export default function Hero() {
@@ -40,15 +39,13 @@ export default function Hero() {
         </p>
 
         <h1 className={styles.subtitle1}>
-
           <img
-            src="/make1.jpg"
+            src="/images/make4.jpeg"
             alt="Make in India"
             className={styles.makeInIndiaImg}
           />
-          <span>Make in India  | Supporting the Atmanirbhar Bharat Mission</span>
+          <span>Make in India | Supporting the Atmanirbhar Bharat Mission</span>
         </h1>
-
 
         <ul className={styles.features}>
           <li>
@@ -84,9 +81,7 @@ export default function Hero() {
           >
             Learn More
           </button>
-
         </div>
-
       </div>
       <div className={styles.right}>
         <button

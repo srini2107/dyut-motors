@@ -22,6 +22,8 @@
     display: flex;
     align-items: flex-start;
     justify-content: center;
+    position: relative;
+    overflow: hidden;
 }
 
 .image {
@@ -29,6 +31,11 @@
     max-width: 340px;
     border-radius: 12px;
     background: #fff;
+    transition: transform 0.3s ease-in-out;
+}
+
+.imageWrapper:hover .image {
+    transform: scale(1.2); /* Zoom effect */
 }
 
 .details {
@@ -68,6 +75,12 @@
     color: #ffd700;
     font-weight: bold;
     margin-bottom: 24px;
+}
+
+.discount {
+    color: red;
+    font-size: 0.9em;
+    margin-left: 8px;
 }
 
 .buyButton {
@@ -118,4 +131,31 @@
 .cancelButton:hover {
     background: #ffd7d7;
     color: #b71c1c;
+}
+
+.arrowButton {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.arrowButton:hover {
+    background: rgba(0, 0, 0, 0.8);
+}
+
+.arrowButton:first-of-type {
+    left: 10px;
+}
+
+.arrowButton:last-of-type {
+    right: 10px;
 }

@@ -1,3 +1,4 @@
+'use client';
 import { useRouter } from 'next/navigation';
 import styles from './ProductDetails.module.css';
 import React, { useState } from 'react';
@@ -39,8 +40,28 @@ export default function ProductDetails({ product }) {
                 <div className={styles.details}>
                     <h1 className={styles.title}>{product.name}</h1>
                     <h3 className={styles.category}>{product.category}</h3>
-                    <p className={styles.description}>{product.description}</p>
-                    <div className={styles.price}>₹{product.price}</div>
+                    <p className={styles.description}>
+                        {product.description || "No description available."}
+                    </p>
+                    <div className={styles.specifications}>
+                        <h4>Specifications:</h4>
+                        <ul>
+                            <li>Thrust Limitation: {product.specifications?.thrust_limitation || "N/A"}</li>
+                            <li>Optimum RPM: {product.specifications?.optimum_RPM || "N/A"}</li>
+                            <li>Dimension: {product.specifications?.dimension || "N/A"}</li>
+                            <li>Surface Treatment: {product.specifications?.surface_treatment || "N/A"}</li>
+                            <li>Temperature: {product.specifications?.temperature || "N/A"}</li>
+                            <li>Material: {product.specifications?.material || "N/A"}</li>
+                        </ul>
+                    </div>
+                    <div className={styles.price}>
+                        ₹{product.discount ? product.price - product.discount : product.price}
+                        {product.discount && (
+                            <span className={styles.discount}>
+                                (₹{product.discount} off)
+                            </span>
+                        )}
+                    </div>
                     <div className={styles.actions}>
                         <button
                             className={styles.buyButton}

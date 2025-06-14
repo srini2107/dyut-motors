@@ -7,7 +7,7 @@ export default function AboutUs() {
     <div className={styles.wrapper}>
       <main className={styles.container}>
         <section className={styles.contentSection}>
-          <h1 className={styles.title}>About Dyut Motors</h1>
+          <h1 className={styles.title}>About Us</h1>
           <p className={styles.paragraph}>
             Dyut Motors is dedicated to providing high-performance motors, propellers, and avionics for electric vehicles and drones.
             Our mission is to deliver quality, reliability, and innovation to empower your next project.

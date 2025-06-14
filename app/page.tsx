@@ -2,6 +2,7 @@
 import Hero from './component/Hero';
 import TopProducts from './component/TopProducts';
 
+
 export default function HomePage() {
   return (
     <>

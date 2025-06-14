@@ -17,7 +17,7 @@ export default function ContactUs() {
     <div className={styles.wrapper}>
       <main className={styles.container}>
         <div className={styles.topContent}>
-          <h1 className={styles.title}>Contact Dyut Motors</h1>
+          <h1 className={styles.title}>Contact Us</h1>
           <p className={styles.description}>
             We’re your one-stop destination for all hobby and commercial
             propeller needs. Have questions or need support? Our team is here to
