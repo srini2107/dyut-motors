@@ -1,5 +1,6 @@
 import styles from './ProductCard.module.css';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function ProductCard({ product, category }) {
   // Sanitize image path to avoid repeated /images/
@@ -17,7 +18,9 @@ export default function ProductCard({ product, category }) {
 
   return (
     <div className={styles.card}>
-      <img src={imageSrc} alt={product.name || "Product image"} className={styles.image} />
+      <Image src={imageSrc} alt={product.name || "Product image"} 
+      className={styles.image} width={700}
+      height={475}/>
       <h3 className={styles.name}>{product.name || "Unnamed Product"}</h3>
       <p className={styles.description}>{truncateDescription(product.description || "No description available.")}</p>
       <div className={styles.price}>₹{product.price || "N/A"}</div>

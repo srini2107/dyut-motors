@@ -6,7 +6,6 @@
   background-color: #1a237e;
   /* new deep blue */
   color: #fff;
-  ;
   position: relative;
 }
 
@@ -18,11 +17,6 @@
 }
 
 .loginLogo {
-  height: 74px;
-  /* or your preferred size */
-
-  /* ensures it doesn't overflow */
-  width: auto;
   margin: 0;
   display: block;
 }
@@ -128,8 +122,6 @@
   letter-spacing: 0.5px;
 }
 
-
-
 .accountDropdownContent .dropdownLabel {
   font-size: 0.88rem;
 }
@@ -168,7 +160,7 @@
   .loginLogo {
     height: 54px;
     /* or your preferred size */
-  
+
     /* ensures it doesn't overflow */
     width: auto;
     margin: 0;
@@ -196,7 +188,6 @@
     gap: 15px;
     border-bottom: 1px solid #8ad823;
   }
-
 
   .active {
     display: flex;

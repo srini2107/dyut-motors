@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import styles from "./LoginForm.module.css";
 import { useAuth } from "../context/AuthContext";
+import Image from "next/image";
 
 export default function LoginForm({
   loginFormRef,
@@ -97,12 +98,15 @@ export default function LoginForm({
       <div className={styles.popup}>
         {step === "signup" ? (
           <form className={styles.form} onSubmit={handleSignup}>
-            <img
-              src="images/img1.png"
+            <Image
+              src="/images/img1.png"
               alt="Logo"
               className={styles.signLogo}
-              style={{ cursor: 'pointer' }}
+              style={{ cursor: "pointer" }}
+              width={80}
+              height={60}
             />
+
             <h2>Sign Up</h2>
             <input
               name="name"

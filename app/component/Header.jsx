@@ -5,6 +5,7 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import Link from "next/link";
 import { useAuth } from "../context/AuthContext";
 import LoginForm from "../login/LoginForm";
+import Image from "next/image";
 
 export default function Header() {
   const {
@@ -76,9 +77,11 @@ export default function Header() {
       <header className={styles.header}>
         <div className={styles.logo}>
           <Link href="/" onClick={handleNav}>
-            <img
-              src="images/img1.png"
+            <Image
+              src="/images/img1.png"
               alt="Logo"
+              width={100}
+              height={60}
               className={styles.loginLogo}
               style={{ cursor: "pointer" }}
             />

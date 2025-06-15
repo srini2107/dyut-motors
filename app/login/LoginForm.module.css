@@ -101,11 +101,7 @@
 }
 
 .signLogo {
-  height: 74px;
-  /* or your preferred size */
 
-  /* ensures it doesn't overflow */
-  width: auto;
   margin: 0;
   display: block;
   margin-bottom: 0.5rem;

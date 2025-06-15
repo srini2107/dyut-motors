@@ -1,14 +1,12 @@
-
-import ProductCard from '../../component/ProductCard';
-import cardStyles from '../../component/ProductCard.module.css';
-import pageStyles from './CategoryPage.module.css';
+import ProductCard from "../../component/ProductCard";
+import cardStyles from "../../component/ProductCard.module.css";
+import pageStyles from "./CategoryPage.module.css";
 
 export default async function CategoryPage({ params }) {
-  const { category } = params;
+  const { category } = await params;
 
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/products/category/${category}`,
-    { cache: "no-store" } // optional: disable caching
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/products/category/${category}`
   );
 
   if (!res.ok) {
@@ -24,8 +22,12 @@ export default async function CategoryPage({ params }) {
           {category.charAt(0).toUpperCase() + category.slice(1)}
         </h1>
         <div className={cardStyles.container}>
-          {products.map(product => (
-            <ProductCard key={product.id} product={product} category={category} />
+          {products.map((product) => (
+            <ProductCard
+              key={product.id}
+              product={product}
+              category={category}
+            />
           ))}
         </div>
       </div>

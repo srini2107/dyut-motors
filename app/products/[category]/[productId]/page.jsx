@@ -1,7 +1,7 @@
 import ProductDetails from "../../../component/ProductDetails";
 
 export default async function ProductPage({ params }) {
-  const { productId } = params;
+  const { productId } = await params;
 
   console.log("Requested product ID:", productId);
 
