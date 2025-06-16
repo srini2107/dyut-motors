@@ -6,8 +6,7 @@ export default async function CategoryPage({ params }) {
   const { category } = await params;
 
   const res = await fetch(
-    //`${process.env.DATABASE_URL}/api/products/category/${category}`
-    `/api/products/category/${category}`
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/products/category/${category}`
   );
 
   if (!res.ok) {
