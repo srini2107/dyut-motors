@@ -1,28 +1,35 @@
-import pool from "../../../lib/db"; // Adjust path if needed
+//import pool from "../../../lib/db"; // Adjust path if needed
+import db from "../../../lib/db"; // Make sure this exports a MySQL pool/connection
 import { NextResponse } from "next/server";
 
-export async function GET(req, context) {
-  const { id } = context.params;
+export async function GET(req, { params }) {
+  const { id } = await params;
 
   try {
-    const result = await pool.query(
-      "SELECT * FROM products WHERE id = $1",
+    const [rows] = await db.query(
+      `
+      SELECT 
+        p.*,
+        s.thrust_limitation,
+        s.optimum_rpm,
+        s.dimension,
+        s.surface_treatment,
+        s.temperature,
+        s.material
+      FROM products p
+      LEFT JOIN specifications s ON p.id = s.product_id
+      WHERE p.id = ?
+      `,
       [id]
     );
 
-    if (result.rows.length === 0) {
-      return NextResponse.json(
-        { error: "Product not found" },
-        { status: 404 }
-      );
+    if (rows.length === 0) {
+      return Response.json({ message: "Product not found" }, { status: 404 });
     }
 
-    return NextResponse.json(result.rows[0]);
+    return Response.json(rows[0]);
   } catch (error) {
-    console.error("DB error:", error);
-    return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 }
-    );
+    console.error("Error fetching product with specifications:", error);
+    return Response.json({ message: "Internal server error" }, { status: 500 });
   }
 }

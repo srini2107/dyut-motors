@@ -1,24 +1,24 @@
-import pool from "../../../../lib/db"; // Adjust the path as necessary
+//import pool from "../../../../lib/db"; // Adjust the path as necessary
+import db from "../../../../lib/db"; // Adjust the path as necessary
 
 
+import { NextResponse } from "next/server";
 
-export async function GET(req, context) {
-  const { category } = await context.params;
+export async function GET(req, {params}) {
+  const {category} = await params;
 
   try {
-    const result = await pool.query(
-      "SELECT * FROM products WHERE category = $1",
+    const [rows] = await db.query(
+      "SELECT * FROM products WHERE category = ?",
       [category]
     );
 
-    return new Response(JSON.stringify(result.rows), {
-      status: 200,
-      headers: { "Content-Type": "application/json" },
-    });
+    return NextResponse.json(rows || []);
   } catch (error) {
-    console.error("DB Error:", error);
-    return new Response(JSON.stringify({ error: error.message }), {
-      status: 500,
-    });
+    console.error("DB error:", error);
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
   }
 }

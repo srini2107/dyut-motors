@@ -1,4 +1,5 @@
-import pool from "../../lib/db"; // Adjust path if needed
+//import pool from "../../lib/db"; // Adjust path if needed
+import db from "../../lib/db"; // Adjust path if needed
 import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 
@@ -31,8 +32,9 @@ export async function POST(req) {
 
   try {
     // Check if user already exists (PostgreSQL syntax)
-    const result = await pool.query(
-      "SELECT * FROM users WHERE username = $1 OR email = $2",
+    const result = await db.query(
+      //"SELECT * FROM users WHERE username = $1 OR email = $2",
+      "SELECT * FROM users WHERE username = ? OR email = ?",
       [username, email]
     );
 
@@ -47,8 +49,9 @@ export async function POST(req) {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Insert new user
-    await pool.query(
-      "INSERT INTO users (name, username, email, password) VALUES ($1, $2, $3, $4)",
+    await db.query(
+      //"INSERT INTO users (name, username, email, password) VALUES ($1, $2, $3, $4)",
+      "INSERT INTO users (name, username, email, password) VALUES (?, ?, ?, ?)",
       [name, username, email, hashedPassword]
     );
 

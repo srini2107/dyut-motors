@@ -3,17 +3,31 @@ import cardStyles from "../../component/ProductCard.module.css";
 import pageStyles from "./CategoryPage.module.css";
 
 export default async function CategoryPage({ params }) {
+  //const category = params.category; // params is already available
+
   const { category } = await params;
 
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/products/category/${category}`
-  );
+  let products = [];
 
-  if (!res.ok) {
-    return <div>Error loading products</div>;
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/products/category/${category}`
+    );
+
+    if (!res.ok) throw new Error("Failed to fetch products");
+
+    const text = await res.text();
+
+    if (!text || text.trim() === "") {
+      console.warn("Empty response received for category:", category);
+      return <div>No products available for this category.</div>;
+    }
+
+    products = JSON.parse(text);
+  } catch (error) {
+    console.error("Error loading or parsing products:", error);
+    return <div>Something went wrong while loading the products.</div>;
   }
-
-  const products = await res.json();
 
   return (
     <main className={pageStyles.main}>

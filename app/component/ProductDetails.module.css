@@ -68,7 +68,7 @@
 .category {
   color: #42a5f5;
   margin-bottom: 8px;
-  font-size: 1.1rem;
+  font-size: 1.5rem;
 }
 
 .description {
@@ -77,10 +77,27 @@
   color: #e0e0e0;
 }
 
-.price {
-  font-size: 1.3rem;
+.desc {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.specifications1 {
+  margin-bottom: 0.25rem;
+  font-size: 1.5rem;
+  color: #e0e0e0;
+}
+
+.specifications {
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
   color: #ffd700;
-  font-weight: bold;
+}
+
+.price {
+  font-size: 1.5rem;
+  color: #e0e0e0;
+  
   margin-bottom: 24px;
 }
 
@@ -91,13 +108,13 @@
 }
 
 .buyButton {
-  padding: 10px 28px;
+  padding: 8px 20px;
   background: #ffd700;
   color: #222;
   border: none;
   border-radius: 8px;
   font-weight: bold;
-  font-size: 1.1rem;
+  font-size: 1rem;
   cursor: pointer;
   transition: background 0.2s;
   display: inline-block;
@@ -121,18 +138,43 @@
 }
 
 .cancelButton {
-  padding: 10px 28px;
+  padding: 8px 20px;
   background: #e0e0e0;
   color: #232323;
   border: none;
   border-radius: 8px;
   font-weight: bold;
-  font-size: 1.1rem;
+  font-size: 1rem;
   cursor: pointer;
   transition: background 0.2s;
   display: inline-block;
-  min-width: 140px;
-  margin-left: 1rem;
+  width: auto;
+  /* Add this */
+  min-width: 40px;
+  /* Optional: ensures a nice minimum size */
+  text-align: center;
+}
+
+.addButton {
+  padding: 8px 20px;
+  background: #e0e0e0;
+  color: #232323;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  display: inline-block;
+  width: auto;
+  /* Add this */
+  min-width: 40px;
+  /* Optional: ensures a nice minimum size */
+  text-align: center;
+}
+
+.addButton:hover {
+  color: #14a714;
 }
 
 .cancelButton:hover {
@@ -165,4 +207,146 @@
 
 .arrowButton:last-of-type {
   right: 10px;
+}
+
+.note {
+  margin-top: 2rem;
+  border: 1px solid #cab850;
+}
+
+.note h4 {
+  text-align: center;
+  font-size: 1.5rem;
+  color: #cab850;
+}
+
+.note ul li {
+  list-style: disc;
+  list-style-position: inside;
+  padding: 0.5rem;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  margin-top: 15px;
+}
+
+@media (max-width: 1024px) {
+  .container {
+    flex-direction: column;
+    padding: 24px;
+    margin: 20px auto;
+  }
+
+  .details {
+    align-items: center;
+    text-align: center;
+    padding: 0;
+  }
+
+  .imageWrapper {
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .main {
+    padding: 20px 16px;
+  }
+
+  .container {
+    flex-direction: column;
+    gap: 24px;
+    padding: 20px;
+  }
+
+  .image {
+    max-width: 240px;
+    width: 100%;
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .category {
+    font-size: 1.25rem;
+  }
+
+  .description,
+  .specifications,
+  .price {
+    font-size: 1rem;
+  }
+
+  .specifications1 {
+    font-size: 1.2rem;
+  }
+
+  .buttonRow {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .buyButton,
+  .cancelButton,
+  .addButton {
+    width: 100%;
+  }
+
+  .note {
+    font-size: 0.95rem;
+  }
+
+  .note h4 {
+    font-size: 1.25rem;
+  }
+
+  .note ul li {
+    font-size: 0.95rem;
+    padding-left: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 16px;
+  }
+
+  .title {
+    font-size: 1.3rem;
+  }
+
+  .category {
+    font-size: 1rem;
+  }
+
+  .description,
+  .specifications,
+  .price {
+    font-size: 0.95rem;
+  }
+
+  .note h4 {
+    font-size: 1.1rem;
+  }
+
+  .note ul li {
+    font-size: 0.9rem;
+  }
+
+  .buyButton,
+  .cancelButton {
+    width: 100%;
+  }
+
+  /* .arrowButton {
+    width: 32px;
+    height: 32px;
+    font-size: 1.2rem;
+  } */
 }

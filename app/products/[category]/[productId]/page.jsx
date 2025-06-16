@@ -17,3 +17,4 @@ export default async function ProductPage({ params }) {
 
   return <ProductDetails product={product} />;
 }
+
