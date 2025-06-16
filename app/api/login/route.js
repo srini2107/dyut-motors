@@ -1,4 +1,4 @@
-import db from "../../lib/db";
+import pool from "../../lib/db";
 import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 
@@ -15,40 +15,47 @@ export async function POST(req) {
     );
   }
 
-  // Query the database for the user by username or email
-  const [user] = await db.query(
-    "SELECT * FROM users WHERE username = ? OR email = ?",
-    [userOrEmail, userOrEmail]
-  );
-  console.log("Queried user:", user);
+  try {
+    // PostgreSQL-style query using $1, $2
+    const result = await pool.query(
+      "SELECT * FROM users WHERE username = $1 OR email = $2",
+      [userOrEmail, userOrEmail]
+    );
 
-  // Check if the user exists
-  if (!user || user.length === 0) {
+    const user = result.rows[0];
+    console.log("Queried user:", user);
+
+    if (!user) {
+      return NextResponse.json(
+        { error: "Invalid username/email or password." },
+        { status: 401 }
+      );
+    }
+
+    // Compare passwords
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (!isMatch) {
+      return NextResponse.json(
+        { error: "Invalid username/email or password." },
+        { status: 401 }
+      );
+    }
+
+    // Success response
+    return NextResponse.json({
+      success: true,
+      user: {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+      },
+    });
+  } catch (error) {
+    console.error("Login error:", error);
     return NextResponse.json(
-      { error: "Invalid username/email or password." },
-      { status: 401 }
+      { error: "Internal server error." },
+      { status: 500 }
     );
   }
-
-  // Compare the provided password with the hashed password in the database
-  console.log("Stored password:", user[0].password);
-  console.log("Entered password:", password);
-  const isMatch = await bcrypt.compare(password, user[0].password);
-
-  if (!isMatch) {
-    return NextResponse.json(
-      { error: "Invalid username/email or password." },
-      { status: 401 }
-    );
-  }
-
-  // Return success response with user details
-  return NextResponse.json({
-    success: true,
-    user: {
-      id: user[0].id,
-      username: user[0].username,
-      email: user[0].email,
-    },
-  });
 }

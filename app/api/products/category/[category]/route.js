@@ -1,32 +1,24 @@
-import db from "../../../../lib/db"; // Adjust the path as necessary
+import pool from "../../../../lib/db"; // Adjust the path as necessary
 
-export async function GET(req, { params }) {
-  const { category } = params;
+
+
+export async function GET(req, context) {
+  const { category } = await context.params;
 
   try {
-    const [rows] = await db.query("SELECT * FROM products WHERE category = ?", [
-      category,
-    ]);
+    const result = await pool.query(
+      "SELECT * FROM products WHERE category = $1",
+      [category]
+    );
 
-    // Sanitize image paths in the response
-    const products = rows.map((product) => ({
-      ...product,
-      image: product.image.startsWith("/images/")
-        ? product.image
-        : "/images/default.png",
-    }));
-
-    console.log("Fetched products:", products); // Debugging log
-
-    return new Response(JSON.stringify(products), {
+    return new Response(JSON.stringify(result.rows), {
       status: 200,
       headers: { "Content-Type": "application/json" },
     });
   } catch (error) {
-    console.error(error);
-    return new Response(JSON.stringify({ error: "Failed to fetch products" }), {
+    console.error("DB Error:", error);
+    return new Response(JSON.stringify({ error: error.message }), {
       status: 500,
-      headers: { "Content-Type": "application/json" },
     });
   }
 }

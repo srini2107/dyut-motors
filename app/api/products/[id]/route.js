@@ -1,38 +1,28 @@
-import db from "../../../lib/db"; // Adjusted path based on project structure
+import pool from "../../../lib/db"; // Adjust path if needed
+import { NextResponse } from "next/server";
 
 export async function GET(req, context) {
-  const { params } = await context; // Await params before accessing
-  const { id } = params;
+  const { id } = context.params;
 
   try {
-    const [rows] = await db.query(
-      'SELECT * FROM products WHERE id = ?',
+    const result = await pool.query(
+      "SELECT * FROM products WHERE id = $1",
       [id]
     );
 
-    if (rows.length === 0) {
-      return new Response(JSON.stringify({ error: 'Product not found' }), {
-        status: 404,
-        headers: { 'Content-Type': 'application/json' },
-      });
+    if (result.rows.length === 0) {
+      return NextResponse.json(
+        { error: "Product not found" },
+        { status: 404 }
+      );
     }
 
-    const product = rows[0];
-    product.image = product.image.startsWith("/images/")
-      ? product.image
-      : "/images/default.png"; // Sanitize image path
-
-    console.log("Fetched product:", product); // Debugging log
-
-    return new Response(JSON.stringify(product), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return NextResponse.json(result.rows[0]);
   } catch (error) {
-    console.error(error);
-    return new Response(JSON.stringify({ error: 'Failed to fetch product' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    console.error("DB error:", error);
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
   }
 }
