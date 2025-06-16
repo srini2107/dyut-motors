@@ -5,7 +5,9 @@ export default async function ProductPage({ params }) {
 
   console.log("Requested product ID:", productId);
 
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/products/${productId}`);
+  const res = await fetch(
+    `${process.env.DATABASE_URL}/api/products/${productId}`
+  );
   if (!res.ok) {
     console.error("Failed to fetch product:", res.statusText);
     return <div>Error loading product details</div>;
