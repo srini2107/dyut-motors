@@ -174,7 +174,8 @@
 }
 
 .addButton:hover {
-  color: #14a714;
+  color: #232323;
+  background: #e6c200;
 }
 
 .cancelButton:hover {

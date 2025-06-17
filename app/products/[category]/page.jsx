@@ -11,7 +11,8 @@ export default async function CategoryPage({ params }) {
 
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/products/category/${category}`
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/products/category/${category}`,
+      { cache: "no-store" }
     );
 
     if (!res.ok) throw new Error("Failed to fetch products");

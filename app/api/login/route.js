@@ -1,5 +1,5 @@
 //import pool from "../../lib/db";
-import db from "../../lib/db";
+import pool from "../../lib/db";
 import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 
@@ -18,9 +18,9 @@ export async function POST(req) {
 
   try {
     // PostgreSQL-style query using $1, $2
-    const result = await db.query(
-      //"SELECT * FROM users WHERE username = $1 OR email = $2",
-      "SELECT * FROM users WHERE username = ? OR email = ?",
+    const result = await pool.query(
+      "SELECT * FROM users WHERE username = $1 OR email = $2",
+      //"SELECT * FROM users WHERE username = ? OR email = ?",
       [userOrEmail, userOrEmail]
     );
 

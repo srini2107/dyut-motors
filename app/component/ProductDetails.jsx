@@ -77,13 +77,13 @@ export default function ProductDetails({ product }) {
           </div>
 
           <div className={styles.actions}>
-            <button className={styles.buyButton} onClick={handleBuyNow}>
+            <button className={styles.addButton} onClick={handleBuyNow}>
               Add to Cart
             </button>
-            <button className={styles.buyButton} onClick={handleBuyNow}>
+            <button className={styles.addButton} onClick={handleBuyNow}>
               Buy Now
             </button>
-            <button className={styles.buyButton} onClick={handleBuyNow}>
+            <button className={styles.addButton} onClick={handleBuyNow}>
               Add to wishlist
             </button>
             <button
