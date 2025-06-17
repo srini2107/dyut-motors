@@ -1,5 +1,5 @@
 .main {
-  padding: 40px 5vw;
+  padding: 20px 5vw;
   min-height: 80vh;
   background-color: #f1f3ff;
 }
@@ -235,39 +235,26 @@
   margin-top: 15px;
 }
 
-@media (max-width: 1024px) {
+
+
+/* @media screen and (max-width: 768px) {
   .container {
-    flex-direction: column;
-    padding: 24px;
+    padding: 16px;
     margin: 20px auto;
+  }
+
+  .imageWrapper {
+    justify-content: center;
+  }
+
+  .image {
+    max-width: 100%;
+    height: auto;
   }
 
   .details {
     align-items: center;
     text-align: center;
-    padding: 0;
-  }
-
-  .imageWrapper {
-    justify-content: center;
-    margin-bottom: 20px;
-  }
-}
-
-@media (max-width: 768px) {
-  .main {
-    padding: 20px 16px;
-  }
-
-  .container {
-    flex-direction: column;
-    gap: 24px;
-    padding: 20px;
-  }
-
-  .image {
-    max-width: 240px;
-    width: 100%;
   }
 
   .title {
@@ -275,79 +262,33 @@
   }
 
   .category {
-    font-size: 1.25rem;
-  }
-
-  .description,
-  .specifications,
-  .price {
-    font-size: 1rem;
-  }
-
-  .specifications1 {
     font-size: 1.2rem;
   }
 
-  .buttonRow {
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .buyButton,
-  .cancelButton,
-  .addButton {
-    width: 100%;
-  }
-
-  .note {
-    font-size: 0.95rem;
-  }
-
-  .note h4 {
-    font-size: 1.25rem;
-  }
-
-  .note ul li {
-    font-size: 0.95rem;
-    padding-left: 0;
-  }
-}
-
-@media (max-width: 480px) {
-  .container {
-    padding: 16px;
-  }
-
-  .title {
-    font-size: 1.3rem;
-  }
-
-  .category {
-    font-size: 1rem;
-  }
-
   .description,
+  .specifications1,
   .specifications,
   .price {
-    font-size: 0.95rem;
-  }
-
-  .note h4 {
-    font-size: 1.1rem;
-  }
-
-  .note ul li {
     font-size: 0.9rem;
   }
+  
+  .cancelButton,
+  .addButton {
+    font-size: 0.9rem;
+    padding: 5px 10px;
+  }
+  
+} */
 
-  .buyButton,
+/* Responsive Design */
+@media (max-width: 600px) {
+  .actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .addButton,
   .cancelButton {
     width: 100%;
   }
-
-  /* .arrowButton {
-    width: 32px;
-    height: 32px;
-    font-size: 1.2rem;
-  } */
 }
