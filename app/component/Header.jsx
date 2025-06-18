@@ -193,6 +193,17 @@ export default function Header() {
                 )}
               </li>
             )}
+            {isLoggedIn && (
+              <li>
+                <Link
+                  href="/cart"
+                  onClick={handleNav}
+                  className={styles.cartButton}
+                >
+                  <i className="bi bi-cart-fill"></i> Cart
+                </Link>
+              </li>
+            )}
           </ul>
         </nav>
       </header>

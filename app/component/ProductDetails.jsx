@@ -4,6 +4,7 @@ import styles from "./ProductDetails.module.css";
 import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import Image from "next/image";
+import { useCart } from "../context/CartContext";
 
 export default function ProductDetails({ product }) {
   const { isLoggedIn, setShowLoginForm } = useAuth();
@@ -16,21 +17,49 @@ export default function ProductDetails({ product }) {
     return <div style={{ color: "#fff", padding: 32 }}>Product not found.</div>;
   }
 
-  const handleBuyNow = () => {
+  const handleBuyNow = (product) => {
     if (!isLoggedIn) {
-      setShowLoginForm(true);
-      setPendingBuy(true);
-    } else {
-      handleBuy();
+      setShowLoginForm(true); // open login form
+      return;
     }
+    if (
+      !product ||
+      !product.id ||
+      !product.name ||
+      product.price === undefined
+    ) {
+      console.error("Invalid product data:", product);
+      return;
+    }
+
+    const params = new URLSearchParams({
+      id: product.id.toString(),
+      name: product.name,
+      price: product.price.toString(),
+      quantity: "1",
+    });
+    alert("Proceeding to buy!");
+    router.push(`/payment?${params.toString()}`);
   };
 
-  const handleBuy = () => {
-    alert("Proceeding to buy!");
-  };
+  // const handleBuy = () => {
+  //   alert("Proceeding to buy!");
+  //   router.push("/payment");
+  // };
 
   const toggleZoom = () => {
     setIsZoomed(!isZoomed);
+  };
+
+  const { addToCart } = useCart();
+
+  const handleAddToCart = () => {
+    if (!isLoggedIn) {
+      setShowLoginForm(true); // open login form
+      return;
+    }
+    addToCart(product);
+    alert("Product added to cart!");
   };
 
   return (
@@ -77,10 +106,13 @@ export default function ProductDetails({ product }) {
           </div>
 
           <div className={styles.actions}>
-            <button className={styles.addButton} onClick={handleBuyNow}>
+            <button className={styles.addButton} onClick={handleAddToCart}>
               Add to Cart
             </button>
-            <button className={styles.addButton} onClick={handleBuyNow}>
+            <button
+              className={styles.addButton}
+              onClick={() => handleBuyNow(product)}
+            >
               Buy Now
             </button>
             <button className={styles.addButton} onClick={handleBuyNow}>

@@ -156,6 +156,31 @@
   background-color: #ff1a1a;
 }
 
+.cartButton {
+  align-items: center;
+  gap: 6px;
+  font-size: 16px;
+  padding: 8px 12px;
+  background-color: #0070f3;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  text-decoration: none;
+}
+
+.cartButton:hover {
+  background-color: #005bb5;
+}
+
+/* Responsive tweak */
+@media (max-width: 768px) {
+  .cartButton {
+    width: 100%;
+    text-align: left;
+    padding: 10px;
+  }
+}
+
 @media (max-width: 768px) {
   .loginLogo {
     height: 54px;
