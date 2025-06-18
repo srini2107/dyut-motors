@@ -1,5 +1,4 @@
 "use client";
-
 import { useSearchParams } from "next/navigation";
 import React, { useContext } from "react";
 import styles from "./payment.module.css";
