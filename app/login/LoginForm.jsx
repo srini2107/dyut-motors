@@ -84,6 +84,7 @@ export default function LoginForm({
     setIsLoading(false);
     const data = await res.json();
     if (res.ok) {
+      alert("your login success!!");
       setIsLoggedIn(true);
       setUserName(data.user.username); // Update userName in AuthContext
       onLoginSuccess && onLoginSuccess(data.user);
