@@ -1,14 +1,12 @@
-//import pool from "../../lib/db";
 import pool from "../../lib/db";
 import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
+import { sign } from "jsonwebtoken";
 
 export async function POST(req) {
   const body = await req.json();
-  console.log("Received login payload:", body);
   const { userOrEmail, password } = body;
 
-  // Validate input
   if (!userOrEmail || !password) {
     return NextResponse.json(
       { error: "Username/email and password are required." },
@@ -17,15 +15,12 @@ export async function POST(req) {
   }
 
   try {
-    // PostgreSQL-style query using $1, $2
     const result = await pool.query(
       "SELECT * FROM users WHERE username = $1 OR email = $2",
-      //"SELECT * FROM users WHERE username = ? OR email = ?",
       [userOrEmail, userOrEmail]
     );
 
     const user = result.rows[0];
-    console.log("Queried user:", user);
 
     if (!user) {
       return NextResponse.json(
@@ -34,7 +29,6 @@ export async function POST(req) {
       );
     }
 
-    // Compare passwords
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
@@ -44,8 +38,12 @@ export async function POST(req) {
       );
     }
 
-    // Success response
-    return NextResponse.json({
+    const token = sign({ id: user.id }, process.env.JWT_SECRET, {
+      expiresIn: "1d",
+    });
+
+    // ✅ Set token in secure HTTP-only cookie
+    const response = NextResponse.json({
       success: true,
       user: {
         id: user.id,
@@ -53,6 +51,16 @@ export async function POST(req) {
         email: user.email,
       },
     });
+
+    response.cookies.set("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+      maxAge: 60 * 60 * 24, // 1 day
+    });
+
+    return response;
   } catch (error) {
     console.error("Login error:", error);
     return NextResponse.json(

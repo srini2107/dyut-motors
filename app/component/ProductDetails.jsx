@@ -7,7 +7,7 @@ import Image from "next/image";
 import { useCart } from "../context/CartContext";
 
 export default function ProductDetails({ product }) {
-  const { isLoggedIn, setShowLoginForm } = useAuth();
+  const { isLoggedIn, setShowLoginForm, setRedirectPathAfterLogin } = useAuth();
   const [pendingBuy, setPendingBuy] = useState(false);
   const [isZoomed, setIsZoomed] = useState(false);
 
@@ -19,6 +19,7 @@ export default function ProductDetails({ product }) {
 
   const handleBuyNow = (product) => {
     if (!isLoggedIn) {
+      setRedirectPathAfterLogin("/payment");
       setShowLoginForm(true); // open login form
       return;
     }
@@ -31,6 +32,15 @@ export default function ProductDetails({ product }) {
       console.error("Invalid product data:", product);
       return;
     }
+
+    const productToBuy = {
+      id: product.id,
+      name: product.name,
+      quantity: 1,
+      price: product.price,
+    };
+
+    localStorage.setItem("selectedProduct", JSON.stringify(productToBuy));
 
     const params = new URLSearchParams({
       id: product.id.toString(),

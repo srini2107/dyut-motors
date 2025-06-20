@@ -6,6 +6,8 @@ import Link from "next/link";
 import { useAuth } from "../context/AuthContext";
 import LoginForm from "../login/LoginForm";
 import Image from "next/image";
+import { useRouter } from "next/navigation"; // Added router
+
 
 export default function Header() {
   const {
@@ -14,7 +16,10 @@ export default function Header() {
     showLoginForm,
     setIsLoggedIn,
     userName,
+    logout,
   } = useAuth(); // Retrieve userName from AuthContext
+
+  const router = useRouter(); // ✅ Defined router here
   const [openDropdown, setOpenDropdown] = useState(null); // "product", "account", or null
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobile, setMobile] = useState("");
@@ -66,10 +71,20 @@ export default function Header() {
     setShowLoginForm(false);
   };
 
+  // const handleLogout = () => {
+  //   setIsLoggedIn(false);
+  //   setOpenDropdown(null);
+  //   setMobile("");
+  // };
+
   const handleLogout = () => {
-    setIsLoggedIn(false);
-    setOpenDropdown(null);
-    setMobile("");
+    // console.log("Logging out");
+    // localStorage.removeItem("token");
+    // setIsLoggedIn(false);
+    // setUserName("");
+
+    logout(); // now this handles everything
+    router.push("/"); // optional: redirect to home
   };
 
   return (
@@ -180,8 +195,8 @@ export default function Header() {
                     <div className={styles.dropdownLabel}>
                       My Account Details
                     </div>
-                    <a href="#">My Orders</a>
-                    <a href="#">My Saved Addresses</a>
+                    <a href="/user-dashboard">My Orders</a>
+                    <a href="/user-dashboard">My Saved Addresses</a>
                     <a href="#">Saved Items</a>
                     <button
                       className={styles.logoutButton}

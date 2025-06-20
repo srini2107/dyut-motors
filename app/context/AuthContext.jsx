@@ -1,12 +1,40 @@
 "use client";
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showLoginForm, setShowLoginForm] = useState(false);
-  const [userName, setUserName] = useState(""); // Added userName state
+  const [userName, setUserName] = useState("");
+  const [redirectPathAfterLogin, setRedirectPathAfterLogin] = useState(null); // ← NEW
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const storedUserName = localStorage.getItem("userName");
+
+    if (token) {
+      setIsLoggedIn(true);
+    }
+
+    if (storedUserName) {
+      setUserName(storedUserName);
+    }
+  }, []);
+
+  const login = (token, name) => {
+    localStorage.setItem("token", token);
+    localStorage.setItem("userName", name); // persist username
+    setIsLoggedIn(true);
+    setUserName(name);
+  };
+
+  const logout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("userName");
+    setIsLoggedIn(false);
+    setUserName("");
+  };
 
   return (
     <AuthContext.Provider
@@ -16,7 +44,11 @@ export function AuthProvider({ children }) {
         showLoginForm,
         setShowLoginForm,
         userName,
-        setUserName, // Provide setUserName to update the user's name
+        setUserName,
+        login,
+        logout,
+        redirectPathAfterLogin,
+        setRedirectPathAfterLogin, // ← expose setter
       }}
     >
       {children}
@@ -27,4 +59,3 @@ export function AuthProvider({ children }) {
 export function useAuth() {
   return useContext(AuthContext);
 }
-

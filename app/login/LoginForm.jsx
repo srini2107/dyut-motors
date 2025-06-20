@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import styles from "./LoginForm.module.css";
 import { useAuth } from "../context/AuthContext";
 import Image from "next/image";
+import { useRouter } from "next/navigation"; // Added router
 
 export default function LoginForm({
   loginFormRef,
@@ -10,7 +11,8 @@ export default function LoginForm({
   onLoginSuccess,
   children,
 }) {
-  const { setIsLoggedIn, setUserName } = useAuth();
+  const { login, redirectPathAfterLogin, setRedirectPathAfterLogin } =
+    useAuth();
   const [step, setStep] = useState("login"); // 'signup' or 'login'
   const [signupData, setSignupData] = useState({
     name: "",
@@ -24,6 +26,7 @@ export default function LoginForm({
     password: "",
   });
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter(); // Added router
 
   // Handle signup field changes
   const handleSignupChange = (e) => {
@@ -85,8 +88,11 @@ export default function LoginForm({
     const data = await res.json();
     if (res.ok) {
       alert("your login success!!");
-      setIsLoggedIn(true);
-      setUserName(data.user.username); // Update userName in AuthContext
+      login(data.token, data.user.username); // ✅ update context and persist token+username
+      if (redirectPathAfterLogin) {
+        router.push(redirectPathAfterLogin);
+        setRedirectPathAfterLogin(null); // Clear it
+      }
       onLoginSuccess && onLoginSuccess(data.user);
     } else {
       alert(data.error || "Login failed");

@@ -1,0 +1,68 @@
+/* my-address.module.css */
+.container {
+  background: #fff;
+}
+.wrapper {
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.title {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: #1a1a1a;
+}
+
+.noAddresses {
+  font-size: 1rem;
+  color: #666;
+  text-align: center;
+}
+
+.addressList {
+  display: grid;
+  gap: 1rem;
+}
+
+.addressCard {
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+}
+
+.addressCard:hover {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-color: #d1d1d1;
+}
+
+.addressLine {
+  margin: 0.25rem 0;
+  color: #333;
+  font-size: 1rem;
+}
+
+.addressLine span {
+  font-weight: 500;
+}
+
+/* Responsive tweaks */
+@media screen and (max-width: 600px) {
+  .wrapper {
+    padding: 1rem;
+  }
+
+  .title {
+    font-size: 1.4rem;
+  }
+
+  .addressCard {
+    padding: 1rem;
+  }
+}
