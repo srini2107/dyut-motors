@@ -17,7 +17,7 @@ export async function POST(req) {
     const decoded = verify(token, process.env.JWT_SECRET);
     const userId = decoded.id;
 
-    const {c
+    const {
       address_id,
       items, // array of { product_id, quantity, price }
       total_amount,
