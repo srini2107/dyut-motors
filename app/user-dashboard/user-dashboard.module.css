@@ -1,68 +1,106 @@
-/* my-address.module.css */
-.container {
+.wrapper {
   background: #fff;
 }
-.wrapper {
+.dashboardContainer {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
   padding: 2rem;
-  max-width: 800px;
+  display: flex;
+  min-height: 100vh;
   margin: 0 auto;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  width: 100%;
+  max-width: 1200px;
+  padding: 0 30px;
 }
 
-.title {
-  font-size: 1.8rem;
-  font-weight: 600;
-  margin-bottom: 1.5rem;
-  color: #1a1a1a;
-}
-
-.noAddresses {
-  font-size: 1rem;
-  color: #666;
+.sidebar {
+  padding: 1rem;
   text-align: center;
+  background-color: #ffffff;
+  color: #1a237e;
+  font-size: 1.5rem;
+  font-weight: 600;
+  border-bottom: 1px solid #e0e0e0;
 }
 
-.addressList {
-  display: grid;
-  gap: 1rem;
+.sidebarHeader {
+  padding: 1rem;
+  text-align: center;
+  background-color: #ffffff;
+  color: #1a237e;
+  font-size: 1.5rem;
+  font-weight: 600;
+  border-bottom: 1px solid #e0e0e0;
 }
 
-.addressCard {
-  background: #ffffff;
-  border: 1px solid #e0e0e0;
-  border-radius: 12px;
-  padding: 1rem 1.5rem;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-  transition: all 0.2s ease;
+.sidebarNav {
+  display: flex;
+  flex-direction: column;
 }
 
-.addressCard:hover {
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  border-color: #d1d1d1;
+.navItem {
+  display: flex;
+  align-items: center;
+  padding: 0.7rem 1rem;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+  font-size: 0.95rem;
+  color: #444;
+  border-radius: 5px;
+  transition: background 0.3s;
 }
 
-.addressLine {
-  margin: 0.25rem 0;
-  color: #333;
+.navItem:hover,
+.navItemActive {
+  background-color: #e6f0ff;
+  color: #0070f3;
+}
+
+.navIcon {
+  margin-right: 10px;
   font-size: 1rem;
 }
 
-.addressLine span {
-  font-weight: 500;
+.content {
+  flex: 1;
+  padding: 2rem;
+  background-color: #fafafa;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border-radius: 12px;
 }
 
-/* Responsive tweaks */
-@media screen and (max-width: 600px) {
-  .wrapper {
-    padding: 1rem;
-  }
+.card {
+  background: #fff;
+  border-radius: 8px;
+  padding: 1rem 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  color: #333;
+}
 
-  .title {
-    font-size: 1.4rem;
-  }
+.row {
+  display: flex;
+  margin-bottom: 0.6rem;
+}
 
-  .addressCard {
-    padding: 1rem;
-  }
+.row label {
+  font-weight: bold;
+  width: 120px;
+  color: #333;
+}
+
+.row span {
+  color: #000;
+  flex: 1;
+}
+
+.section h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #222;
+}
+
+.section {
+  padding: 1rem;
 }

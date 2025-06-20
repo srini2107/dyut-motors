@@ -88,7 +88,8 @@ export default function LoginForm({
     const data = await res.json();
     if (res.ok) {
       alert("your login success!!");
-      login(data.token, data.user.username); // ✅ update context and persist token+username
+      login(data.token, data.username); // ✅ update context and persist token+username
+      router.push("/user-dashboard");
       if (redirectPathAfterLogin) {
         router.push(redirectPathAfterLogin);
         setRedirectPathAfterLogin(null); // Clear it

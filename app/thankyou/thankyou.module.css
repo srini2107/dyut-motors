@@ -1,0 +1,63 @@
+.wrapper {
+    background: #fff;
+    display: flex;
+    justify-content: center;
+}
+.container {
+    padding: 2rem;
+    text-align: center;
+    font-family: "Segoe UI", sans-serif;
+    background-color: #f8f9fa;
+    min-height: 100vh;
+    height: 600px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* 👈 shift content towards top */
+    align-items: center;
+    padding-top: 5rem; /* 👈 push content down a bit from top */
+  }
+  
+  .title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: #28a745;
+  }
+  
+  .subtitle {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    color: #333;
+  }
+  
+  .orderInfo {
+    font-size: 1.1rem;
+    background-color: #fff;
+    padding: 1rem 2rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    color: #222;
+    margin-bottom: 1.5rem;
+    min-width: 280px;
+  }
+  
+  .highlight {
+    font-weight: 600;
+    color: #007bff;
+  }
+  
+  .button {
+    background-color: #ffc107;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    color: #000;
+    border-radius: 0.3rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .button:hover {
+    background-color: #e0a800;
+  }
+  

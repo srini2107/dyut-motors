@@ -7,7 +7,7 @@ import pool from "../../lib/db";
 
 export async function POST(req) {
   try {
-    const cookieStore = cookies();
+    const cookieStore = await cookies(); // ✅ Await this
     const token = cookieStore.get("token")?.value;
 
     if (!token) {
@@ -15,13 +15,15 @@ export async function POST(req) {
     }
 
     const decoded = verify(token, process.env.JWT_SECRET);
-    const userId = decoded.id;
+    const user_id = decoded.id;
 
     const {
       address_id,
       items, // array of { product_id, quantity, price }
       total_amount,
     } = await req.json();
+
+    console.log("Received order data:", { address_id, items, total_amount });
 
     if (
       !address_id ||
@@ -40,7 +42,7 @@ export async function POST(req) {
       `INSERT INTO orders (user_id, address_id, total_amount)
        VALUES ($1, $2, $3)
        RETURNING id`,
-      [userId, address_id, total_amount]
+      [user_id, address_id, total_amount]
     );
 
     const orderId = orderResult.rows[0].id;

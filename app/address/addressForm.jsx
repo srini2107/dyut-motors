@@ -42,9 +42,11 @@ export default function AddressForm({ onAddressSaved }) {
 
     const data = await res.json();
     if (res.ok) {
+      const { id } = data; // assuming the API returns the new address ID
+      console.log("Address saved with ID:", id);
       alert("Address saved successfully.");
-      if (onAddressSaved) onAddressSaved();
-      else router.push("/payment-options");
+      if (onAddressSaved) onAddressSaved(id);
+      else router.push("/payment");
     } else {
       alert(data.error || "Failed to save address");
     }

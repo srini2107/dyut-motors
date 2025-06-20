@@ -6,7 +6,7 @@ import { NextResponse } from "next/server";
 // POST /api/saved-address -> Save a new address
 export async function POST(req) {
   try {
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const token = cookieStore.get("token")?.value;
 
     if (!token) {
@@ -44,10 +44,10 @@ export async function POST(req) {
       );
     }
 
-    await pool.query(
+    const result = await pool.query(
       `INSERT INTO addresses 
         (user_id, type, full_name, phone, address_line1, address_line2, city, state, postal_code, country)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING id`,
       [
         userId,
         type,
@@ -62,7 +62,7 @@ export async function POST(req) {
       ]
     );
 
-    return NextResponse.json({ success: true });
+    return NextResponse.json({ success: true, id: result.rows[0].id });
   } catch (error) {
     console.error("Error saving address:", error);
     return NextResponse.json(
@@ -75,7 +75,7 @@ export async function POST(req) {
 // GET /api/saved-address -> Fetch saved addresses
 export async function GET() {
   try {
-    const cookieStore = cookies();
+    const cookieStore = await cookies(); // ✅ Await this
     const token = cookieStore.get("token")?.value;
 
     if (!token) {

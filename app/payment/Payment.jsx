@@ -1,16 +1,19 @@
 "use client";
+
 import React, { useState, useEffect } from "react";
 import styles from "./payment.module.css";
 import { useCart } from "../context/CartContext";
-import { useSearchParams } from "next/navigation";
-import AddressForm from "../address/addressForm"; // 👈 Import it
-import { useRouter } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
+import AddressForm from "../address/addressForm";
 
 const Payment = () => {
-  const { cartItems } = useCart();
+  const { cartItems, clearCart } = useCart();
+  const router = useRouter();
   const searchParams = useSearchParams();
+
   const [orderItem, setOrderItem] = useState(null);
   const [addressSaved, setAddressSaved] = useState(false);
+  const [savedAddressId, setSavedAddressId] = useState("");
   const [selectedMethod, setSelectedMethod] = useState("");
   const [isPlacingOrder, setIsPlacingOrder] = useState(false);
 
@@ -29,42 +32,48 @@ const Payment = () => {
     0
   );
 
-  const handlePaymentSelect = (method) => {
+  const handlePaymentSelect = async (method) => {
     setSelectedMethod(method);
-    // You can also send the selected method to your backend or proceed to payment gateway
+    // Optionally trigger order immediately for testing:
+    await handlePlaceOrder(method);
   };
 
-  const handlePlaceOrder = async () => {
+  const handlePlaceOrder = async (method) => {
     if (!savedAddressId) {
-      alert("Please select a shipping address.");
+      alert("Please save a shipping address first.");
       return;
     }
 
-    const totalAmount = cartItems.reduce(
-      (acc, item) => acc + item.price * item.quantity,
-      0
-    );
+    setIsPlacingOrder(true);
 
-    const res = await fetch("/api/place-order", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        addressId: savedAddressId,
-        items: cartItems,
-        totalAmount,
-      }),
-    });
+    try {
+      const res = await fetch("/api/place-order", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          address_id: savedAddressId,
+          paymentMethod: selectedMethod,
+          items: itemsToDisplay,
+          total_amount: totalAmount,
+        }),
+      });
 
-    const data = await res.json();
+      const data = await res.json();
 
-    if (res.ok) {
-      alert("Order placed successfully!");
-      clearCart();
-      router.push("/user-dashboard");
-    } else {
-      alert(data.error || "Failed to place order");
+      if (res.ok) {
+        alert("Order placed successfully!");
+        clearCart();
+        router.push(`/thankyou?orderId=${data.orderId}&total=${totalAmount}`);
+      } else {
+        alert(data.error || "Failed to place order");
+      }
+    } catch (error) {
+      console.error("Order placement failed:", error);
+      alert("Something went wrong.");
+    } finally {
+      setIsPlacingOrder(false);
     }
   };
 
@@ -73,7 +82,12 @@ const Payment = () => {
       <div className={styles.paymentContainer}>
         <div className={styles.paymentLeft}>
           {!addressSaved ? (
-            <AddressForm onAddressSaved={() => setAddressSaved(true)} />
+            <AddressForm
+              onAddressSaved={(id) => {
+                setSavedAddressId(id);
+                setAddressSaved(true);
+              }}
+            />
           ) : (
             <>
               <h3 className={styles.sectionTitle}>Select Payment Method</h3>
@@ -110,9 +124,9 @@ const Payment = () => {
               {selectedMethod && (
                 <button
                   className={styles.confirmButton}
-                  onClick={() => alert(`Proceeding with ${selectedMethod}`)}
+                  onClick={() => handlePlaceOrder()}
                 >
-                  Proceed to Pay
+                  Proceed with {selectedMethod}
                 </button>
               )}
             </>
@@ -132,13 +146,15 @@ const Payment = () => {
             ))}
           </ul>
           <div className={styles.total}>Total: ₹{totalAmount.toFixed(2)}</div>
-          <button
-            className="placeOrderButton"
-            onClick={handlePlaceOrder}
-            disabled={isPlacingOrder || cartItems.length === 0}
-          >
-            {isPlacingOrder ? "Placing..." : "Place Order"}
-          </button>
+          {
+            <button
+              className="placeOrderButton"
+              onClick={() => handlePlaceOrder()}
+              disabled={isPlacingOrder || itemsToDisplay.length === 0}
+            >
+              {isPlacingOrder ? "Placing..." : "Place Order"}
+            </button>
+          }
         </div>
       </div>
     </div>

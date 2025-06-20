@@ -10,15 +10,13 @@ export function AuthProvider({ children }) {
   const [redirectPathAfterLogin, setRedirectPathAfterLogin] = useState(null); // ← NEW
 
   useEffect(() => {
+    // Restore login from localStorage on reload
     const token = localStorage.getItem("token");
-    const storedUserName = localStorage.getItem("userName");
+    const name = localStorage.getItem("userName");
 
     if (token) {
       setIsLoggedIn(true);
-    }
-
-    if (storedUserName) {
-      setUserName(storedUserName);
+      setUserName(name || "");
     }
   }, []);
 

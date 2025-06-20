@@ -7,7 +7,7 @@ import pool from "../../lib/db"; // Adjust path to your db.js
 
 export async function GET(req) {
   try {
-    const cookieStore = cookies();
+    const cookieStore = await cookies(); // ✅ Await this
     const token = cookieStore.get("token")?.value;
 
     if (!token) {

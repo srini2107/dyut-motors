@@ -66,10 +66,10 @@ export default function Header() {
     console.log("Login form toggled:", !showLoginForm); // Debugging
   };
 
-  const handleLoginSuccess = () => {
-    setIsLoggedIn(true);
-    setShowLoginForm(false);
-  };
+  function handleLoginSuccess(token, name) {
+    login(name, token);
+    router.push("/user-dashboard");
+  }
 
   // const handleLogout = () => {
   //   setIsLoggedIn(false);
