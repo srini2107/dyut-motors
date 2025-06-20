@@ -3,7 +3,7 @@
 import { NextResponse } from "next/server";
 import { verify } from "jsonwebtoken";
 import { cookies } from "next/headers";
-import pool from "../../../lib/db";
+import pool from "../../lib/db";
 
 export async function POST(req) {
   try {
@@ -17,13 +17,18 @@ export async function POST(req) {
     const decoded = verify(token, process.env.JWT_SECRET);
     const userId = decoded.id;
 
-    const {
+    const {c
       address_id,
       items, // array of { product_id, quantity, price }
-      total_amount
+      total_amount,
     } = await req.json();
 
-    if (!address_id || !Array.isArray(items) || items.length === 0 || !total_amount) {
+    if (
+      !address_id ||
+      !Array.isArray(items) ||
+      items.length === 0 ||
+      !total_amount
+    ) {
       return NextResponse.json(
         { error: "Missing order data" },
         { status: 400 }
@@ -41,7 +46,7 @@ export async function POST(req) {
     const orderId = orderResult.rows[0].id;
 
     // 2. Insert each item into order_items table
-    const insertItems = items.map(item =>
+    const insertItems = items.map((item) =>
       pool.query(
         `INSERT INTO order_items (order_id, product_id, quantity, price)
          VALUES ($1, $2, $3, $4)`,
@@ -54,6 +59,9 @@ export async function POST(req) {
     return NextResponse.json({ success: true, orderId });
   } catch (error) {
     console.error("Error placing order:", error);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
   }
 }
