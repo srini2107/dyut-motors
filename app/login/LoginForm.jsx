@@ -4,6 +4,7 @@ import styles from "./LoginForm.module.css";
 import { useAuth } from "../context/AuthContext";
 import Image from "next/image";
 import { useRouter } from "next/navigation"; // Added router
+import { toast } from "react-toastify";
 
 export default function LoginForm({
   loginFormRef,
@@ -44,7 +45,8 @@ export default function LoginForm({
     e.preventDefault();
     console.log("Signup form submitted"); // Debugging
     if (signupData.password !== signupData.confirmPassword) {
-      alert("Passwords do not match!");
+      //alert("Passwords do not match!");
+      toast.error("Passwords do not match!");
       return;
     }
     setIsLoading(true);
@@ -69,7 +71,8 @@ export default function LoginForm({
     e.preventDefault();
     setIsLoading(true);
     if (!loginData.userOrEmail || !loginData.password) {
-      alert("Please enter both username/email and password.");
+      //alert("Please enter both username/email and password.");
+      toast.error("Please enter both username/email and password.");
       return;
     }
     console.log("Sending login data:", {
@@ -87,14 +90,14 @@ export default function LoginForm({
     setIsLoading(false);
     const data = await res.json();
     if (res.ok) {
-      alert("your login success!!");
-      login(data.token, data.username); // ✅ update context and persist token+username
-      router.push("/user-dashboard");
+      toast.success("login success");
+      login(data.token, data.name); // ✅ update context and persist token+username
+      router.push("/");
       if (redirectPathAfterLogin) {
         router.push(redirectPathAfterLogin);
         setRedirectPathAfterLogin(null); // Clear it
       }
-      onLoginSuccess && onLoginSuccess(data.user);
+      onLoginSuccess && onLoginSuccess(data.name);
     } else {
       alert(data.error || "Login failed");
       // Optionally show "Forgot password?" here

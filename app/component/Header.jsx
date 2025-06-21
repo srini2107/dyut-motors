@@ -8,7 +8,6 @@ import LoginForm from "../login/LoginForm";
 import Image from "next/image";
 import { useRouter } from "next/navigation"; // Added router
 
-
 export default function Header() {
   const {
     isLoggedIn,
@@ -195,8 +194,11 @@ export default function Header() {
                     <div className={styles.dropdownLabel}>
                       My Account Details
                     </div>
-                    <a href="/user-dashboard">My Orders</a>
-                    <a href="/user-dashboard">My Saved Addresses</a>
+                    <Link href="/user-dashboard?tab=addresses" onClick={handleNav}>
+                      My Addresses
+                    </Link>
+                    <Link href="/user-dashboard?tab=orders" onClick={handleNav}>My Orders</Link>
+
                     <a href="#">Saved Items</a>
                     <button
                       className={styles.logoutButton}

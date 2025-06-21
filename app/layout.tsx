@@ -5,6 +5,8 @@ import Header from "./component/Header";
 import Footer from "./component/Footer";
 import { AuthProvider } from "./context/AuthContext";
 import { CartProvider } from "./context/CartContext"; // Adjust the path based on your file structure
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
 
 export const metadata: Metadata = {
   title: "dyut motors",
@@ -22,7 +24,8 @@ export default function RootLayout({
         <AuthProvider>
           <CartProvider>
             <Header />
-             {children}
+            {children}
+            <ToastContainer position="top-right" autoClose={3000} />
             <Footer />
           </CartProvider>
         </AuthProvider>

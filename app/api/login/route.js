@@ -1,7 +1,7 @@
 import pool from "../../lib/db";
 import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
-import { sign } from "jsonwebtoken";
+import jwt from "jsonwebtoken"; // Make sure to import like this
 
 export async function POST(req) {
   const body = await req.json();
@@ -38,18 +38,16 @@ export async function POST(req) {
       );
     }
 
-    const token = sign({ id: user.id }, process.env.JWT_SECRET, {
-      expiresIn: "1d",
-    });
+    const token = jwt.sign(
+      { id: user.id, name: user.name },
+      process.env.JWT_SECRET,
+      { expiresIn: "1d" }
+    );
 
-    // ✅ Set token in secure HTTP-only cookie
+    // ✅ Return user.name and set cookie
     const response = NextResponse.json({
       success: true,
-      user: {
-        id: user.id,
-        username: user.username,
-        email: user.email,
-      },
+      name: user.name, // 👈 return this for UI
     });
 
     response.cookies.set("token", token, {

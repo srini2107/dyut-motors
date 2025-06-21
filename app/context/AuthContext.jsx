@@ -22,7 +22,7 @@ export function AuthProvider({ children }) {
 
   const login = (token, name) => {
     localStorage.setItem("token", token);
-    localStorage.setItem("userName", name); // persist username
+    //localStorage.setItem("userName", name); // persist username
     setIsLoggedIn(true);
     setUserName(name);
   };

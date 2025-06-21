@@ -3,12 +3,45 @@ import React, { useEffect, useState } from "react";
 import styles from "./user-dashboard.module.css";
 import { FaHome, FaList, FaGift, FaLock, FaSignOutAlt } from "react-icons/fa";
 import { useAuth } from "../context/AuthContext";
+import AddressModal from "../addressModal/AddressModal";
+import { toast } from "react-toastify";
+import { useSearchParams, useRouter } from "next/navigation";
 
 export default function UserDashboard() {
-  const [selectedTab, setSelectedTab] = useState("addresses");
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const tabParam = searchParams.get("tab");
+  const [selectedTab, setSelectedTab] = useState(tabParam || "addresses");
   const { isLoggedIn, userName } = useAuth();
   const [addresses, setAddresses] = useState([]);
   const [orders, setOrders] = useState([]);
+  const [showForm, setShowForm] = useState(false);
+  const [editingAddress, setEditingAddress] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [isEditing, setIsEditing] = useState(false);
+  const [editAddress, setEditAddress] = useState(null);
+  const [formData, setFormData] = useState({
+    full_name: "",
+    address_line1: "",
+    address_line2: "",
+    city: "",
+    state: "",
+    postal_code: "",
+    country: "",
+    phone: "",
+  });
+
+  useEffect(() => {
+    if (tabParam && tabParam !== selectedTab) {
+      setSelectedTab(tabParam);
+    }
+  }, [tabParam]);
+
+  const handleTabClick = (tabName) => {
+    setSelectedTab(tabName);
+    router.replace(`/user-dashboard?tab=${tabName}`); // Update URL without reload
+  };
 
   function formatDate(dateString) {
     const date = new Date(dateString);
@@ -47,6 +80,129 @@ export default function UserDashboard() {
 
   if (!isLoggedIn) return <p>Please log in to view your dashboard.</p>;
 
+  // const fetchAddressesAgain = () => {
+  //   fetch("/api/saved-address")
+  //     .then((res) => res.json())
+  //     .then((data) => setAddresses(data));
+  // };
+
+  const handleAddNewAddress = () => {
+    setEditAddress(null);
+    setFormData({
+      type: "shipping", // <-- Add this
+      full_name: "",
+      address_line1: "",
+      address_line2: "",
+      city: "",
+      state: "",
+      postal_code: "",
+      country: "",
+      phone: "",
+    });
+    setIsEditing(true);
+  };
+
+  const handleEditAddress = (addr) => {
+    setIsEditing(true);
+    setEditAddress(addr);
+    setFormData({ ...addr });
+  };
+
+  const showDeleteConfirm = (onConfirm) => {
+    toast(
+      ({ closeToast }) => (
+        <div>
+          <p>Are you sure you want to delete this address?</p>
+          <div style={{ display: "flex", gap: "10px", marginTop: "10px" }}>
+            <button
+              className={styles.actionsButton}
+              onClick={() => {
+                onConfirm();
+                closeToast();
+              }}
+            >
+              Yes
+            </button>
+            <button onClick={closeToast} className={styles.actionsButton}>
+              No
+            </button>
+          </div>
+        </div>
+      ),
+      {
+        position: "top-center",
+        autoClose: false,
+        closeOnClick: false,
+        draggable: false,
+      }
+    );
+  };
+
+  const handleDeleteAddress = (id) => {
+    showDeleteConfirm(async () => {
+      try {
+        setIsLoading(true);
+        const res = await fetch(`/api/saved-address/${id}`, {
+          method: "DELETE",
+        });
+        setIsLoading(false);
+
+        if (res.ok) {
+          setAddresses((prev) => prev.filter((a) => a.id !== id));
+          toast.success("Address deleted successfully!");
+        } else {
+          toast.error("Failed to delete address.");
+        }
+      } catch (err) {
+        console.error("Delete error:", err);
+        toast.error("Error deleting address.");
+      }
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true); // 👈 Start loading
+
+    const method = editAddress ? "PUT" : "POST";
+    const url = editAddress
+      ? `/api/saved-address/${editAddress.id}`
+      : "/api/saved-address";
+
+    try {
+      const res = await fetch(url, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      if (res.ok) {
+        const updated = await fetch("/api/saved-address");
+        const updatedList = await updated.json();
+        setAddresses(updatedList);
+
+        setIsEditing(false);
+        setEditAddress(null);
+
+        // ✅ Show appropriate toast
+        if (editAddress) {
+          toast.success("Address updated successfully!");
+        } else {
+          toast.success("Address added successfully!");
+        }
+      } else {
+        const err = await res.json();
+        console.error("Save failed:", err);
+        toast.error("Something went wrong while saving.");
+      }
+    } catch (err) {
+      console.error("Error saving address", err);
+      toast.error("Failed to save address. Please try again.");
+    } finally {
+      setIsLoading(false); // 👈 End loading
+    }
+  };
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.dashboardContainer}>
@@ -59,7 +215,7 @@ export default function UserDashboard() {
               className={`${styles.navItem} ${
                 selectedTab === "addresses" ? styles.navItemActive : ""
               }`}
-              onClick={() => setSelectedTab("addresses")}
+              onClick={() => handleTabClick("addresses")}
             >
               <FaHome className={styles.navIcon} />
               My Addresses
@@ -68,7 +224,7 @@ export default function UserDashboard() {
               className={`${styles.navItem} ${
                 selectedTab === "orders" ? styles.navItemActive : ""
               }`}
-              onClick={() => setSelectedTab("orders")}
+              onClick={() => handleTabClick("orders")}
             >
               <FaList className={styles.navIcon} />
               My Orders
@@ -93,6 +249,14 @@ export default function UserDashboard() {
             <>
               <div className={styles.section}>
                 <h2>Saved Addresses</h2>
+                <div className={styles.topActions}>
+                  <button
+                    className={styles.actionsBu}
+                    onClick={handleAddNewAddress}
+                  >
+                    ➕ Add New Address
+                  </button>
+                </div>
                 {addresses.map((addr) => (
                   <div key={addr.id} className={styles.card}>
                     <div className={styles.row}>
@@ -113,9 +277,34 @@ export default function UserDashboard() {
                       <label>Phone:</label>
                       <span>📞 {addr.phone}</span>
                     </div>
+
+                    <div className={styles.actions}>
+                      <button
+                        className={styles.actionButton}
+                        onClick={() => handleEditAddress(addr)}
+                      >
+                        ✏️ Edit
+                      </button>
+                      <button
+                        className={styles.actionButton}
+                        onClick={() => handleDeleteAddress(addr.id)}
+                      >
+                        🗑️ Delete
+                      </button>
+                    </div>
                   </div>
                 ))}
               </div>
+              {isEditing && (
+                <AddressModal
+                  isOpen={isEditing}
+                  onClose={() => setIsEditing(false)}
+                  onSubmit={handleSubmit}
+                  formData={formData}
+                  setFormData={setFormData}
+                  isEditing={!!editAddress}
+                />
+              )}
             </>
           )}
           {selectedTab === "orders" && (
