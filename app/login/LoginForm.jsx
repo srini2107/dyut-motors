@@ -58,8 +58,12 @@ export default function LoginForm({
     });
     setIsLoading(false);
     if (res.ok) {
-      setStep("login");
-      onSignupSuccess && onSignupSuccess();
+      toast.success("Account created successfully...redirecting to login");
+
+      setTimeout(() => {
+        setStep("login");
+        onSignupSuccess && onSignupSuccess();
+      }, 2500);
     } else {
       const data = await res.json();
       alert(data.error || "Signup failed");

@@ -115,7 +115,6 @@
 }
 
 .actionsButton {
-  background-color: #facc15; /* amber-400 */
   border: none;
   padding: 0.5rem 1rem;
   font-size: 0.95rem;
@@ -247,6 +246,42 @@
   display: flex;
   justify-content: flex-end;
   margin-bottom: 1.5rem;
+}
+
+.emptyState {
+  background: #fff;
+  border: 1px dashed #ccc;
+  border-radius: 8px;
+  padding: 20px;
+  margin-top: 20px;
+  text-align: center;
+  font-size: 16px;
+  color: #666;
+}
+
+.emptyBox {
+  text-align: center;
+  padding: 40px 20px;
+  background-color: #f8f8f8;
+  border-radius: 10px;
+  margin-top: 20px;
+  color: #555;
+}
+
+.actionButton {
+  margin-top: 12px;
+  padding: 8px 16px;
+  background-color: #f4c430;
+  color: #000;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.actionButton:hover {
+  background-color: #e2b900;
 }
 
 /* Responsive tweaks */

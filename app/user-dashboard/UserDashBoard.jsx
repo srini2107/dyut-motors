@@ -80,12 +80,6 @@ export default function UserDashboard() {
 
   if (!isLoggedIn) return <p>Please log in to view your dashboard.</p>;
 
-  // const fetchAddressesAgain = () => {
-  //   fetch("/api/saved-address")
-  //     .then((res) => res.json())
-  //     .then((data) => setAddresses(data));
-  // };
-
   const handleAddNewAddress = () => {
     setEditAddress(null);
     setFormData({
@@ -257,43 +251,49 @@ export default function UserDashboard() {
                     ➕ Add New Address
                   </button>
                 </div>
-                {addresses.map((addr) => (
-                  <div key={addr.id} className={styles.card}>
-                    <div className={styles.row}>
-                      <label>Name:</label>
-                      <span>{addr.full_name}</span>
-                    </div>
-                    <div className={styles.row}>
-                      <label>Address: </label>
-                      <span>
-                        {addr.address_line1}, {addr.address_line2}
-                        <br />
-                        {addr.city}, {addr.state} - {addr.postal_code}
-                        <br />
-                        {addr.country}
-                      </span>
-                    </div>
-                    <div className={styles.row}>
-                      <label>Phone:</label>
-                      <span>📞 {addr.phone}</span>
-                    </div>
-
-                    <div className={styles.actions}>
-                      <button
-                        className={styles.actionButton}
-                        onClick={() => handleEditAddress(addr)}
-                      >
-                        ✏️ Edit
-                      </button>
-                      <button
-                        className={styles.actionButton}
-                        onClick={() => handleDeleteAddress(addr.id)}
-                      >
-                        🗑️ Delete
-                      </button>
-                    </div>
+                {addresses.length === 0 ? (
+                  <div className={styles.emptyState}>
+                    <p>No addresses found. Please add one to proceed.</p>
                   </div>
-                ))}
+                ) : (
+                  addresses.map((addr) => (
+                    <div key={addr.id} className={styles.card}>
+                      <div className={styles.row}>
+                        <label>Name:</label>
+                        <span>{addr.full_name}</span>
+                      </div>
+                      <div className={styles.row}>
+                        <label>Address: </label>
+                        <span>
+                          {addr.address_line1}, {addr.address_line2}
+                          <br />
+                          {addr.city}, {addr.state} - {addr.postal_code}
+                          <br />
+                          {addr.country}
+                        </span>
+                      </div>
+                      <div className={styles.row}>
+                        <label>Phone:</label>
+                        <span>📞 {addr.phone}</span>
+                      </div>
+
+                      <div className={styles.actions}>
+                        <button
+                          className={styles.actionButton}
+                          onClick={() => handleEditAddress(addr)}
+                        >
+                          ✏️ Edit
+                        </button>
+                        <button
+                          className={styles.actionButton}
+                          onClick={() => handleDeleteAddress(addr.id)}
+                        >
+                          🗑️ Delete
+                        </button>
+                      </div>
+                    </div>
+                  ))
+                )}
               </div>
               {isEditing && (
                 <AddressModal
@@ -307,30 +307,43 @@ export default function UserDashboard() {
               )}
             </>
           )}
+
           {selectedTab === "orders" && (
             <>
               <div className={styles.section}>
                 <h2>Order History</h2>
-                {orders.map((order) => (
-                  <div key={order.id} className={styles.card}>
-                    <div className={styles.row}>
-                      <label>Order ID:</label>
-                      <span>{order.id}</span>
-                    </div>
-                    <div className={styles.row}>
-                      <label>Date:</label>
-                      <span>{formatDate(order.created_at)}</span>
-                    </div>
-                    <div className={styles.row}>
-                      <label>Status:</label>
-                      <span>{order.status}</span>
-                    </div>
-                    <div className={styles.row}>
-                      <label>Total:</label>
-                      <span>₹{Number(order.total_amount).toFixed(2)}</span>
-                    </div>
+                {orders.length === 0 ? (
+                  <div className={styles.emptyBox}>
+                    <p>No orders placed yet.</p>
+                    <button
+                      onClick={() => router.push("/products")}
+                      className={styles.actionButton}
+                    >
+                      Start Shopping
+                    </button>
                   </div>
-                ))}
+                ) : (
+                  orders.map((order) => (
+                    <div key={order.id} className={styles.card}>
+                      <div className={styles.row}>
+                        <label>Order ID:</label>
+                        <span>{order.id}</span>
+                      </div>
+                      <div className={styles.row}>
+                        <label>Date:</label>
+                        <span>{formatDate(order.created_at)}</span>
+                      </div>
+                      <div className={styles.row}>
+                        <label>Status:</label>
+                        <span>{order.status}</span>
+                      </div>
+                      <div className={styles.row}>
+                        <label>Total:</label>
+                        <span>₹{Number(order.total_amount).toFixed(2)}</span>
+                      </div>
+                    </div>
+                  ))
+                )}
               </div>
             </>
           )}

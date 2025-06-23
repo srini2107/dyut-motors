@@ -126,7 +126,7 @@
 }
 
 .addAddressButton {
-  background-color: #e6b800;
+  background-color: #ffd700;
   color: black;
   padding: 0.5rem 1rem;
   border: none;
@@ -147,6 +147,103 @@
   font-size: 1.5rem;
   margin-bottom: 1rem;
   color: #002366;
+}
+
+.cardMethodBox {
+  background: #fff;
+  border: 1px solid #f3e0c6;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+
+.cardLogos {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.cardLogos img {
+  height: 24px;
+}
+
+.cardText {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  color: #333;
+}
+
+.cardAddIcon {
+  font-size: 1.2rem;
+  margin-top: 2px;
+}
+
+.cardAddText {
+  font-weight: 500;
+  font-size: 14px;
+  color: #333;
+}
+
+.cardAddText small {
+  font-weight: 400;
+  font-size: 12px;
+  color: #777;
+}
+
+.cardItemBox {
+  display: flex;
+  align-items: flex-start;
+  background-color: #fef7f2;
+  padding: 12px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  border: 1px solid #f0e0d2;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.03);
+}
+
+.cardItemBox input[type="radio"] {
+  margin-right: 12px;
+  margin-top: 5px;
+}
+
+.cardInfo {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.cardText {
+  font-size: 14px;
+  color: #333;
+}
+
+.cardLogo {
+  margin-left: 8px;
+  height: 20px;
+  vertical-align: middle;
+}
+
+.cvvHint {
+  font-size: 12px;
+  color: #555;
+  margin-top: 4px;
+}
+
+.cvvHint a {
+  color: #0070f3;
+  text-decoration: none;
+}
+
+.nickname {
+  font-weight: bold;
+  font-size: 14px;
+  white-space: nowrap;
 }
 
 @media (max-width: 768px) {

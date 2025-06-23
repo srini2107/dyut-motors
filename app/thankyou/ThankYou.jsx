@@ -1,8 +1,11 @@
 "use client";
 import { useSearchParams } from "next/navigation";
 import styles from "./thankyou.module.css";
+import { useRouter } from "next/navigation";
 
 export default function ThankYou() {
+  const router = useRouter();
+
   const searchParams = useSearchParams();
   const orderId = searchParams.get("orderId");
   const total = searchParams.get("total");
@@ -22,10 +25,7 @@ export default function ThankYou() {
             Total Amount: ₹<span className={styles.highlight}>{total}</span>
           </p>
         </div>
-        <button
-          className={styles.button}
-          onClick={() => (window.location.href = "/")}
-        >
+        <button className={styles.button} onClick={() => router.push("/")}>
           Continue Shopping
         </button>
       </div>

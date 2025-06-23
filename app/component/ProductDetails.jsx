@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import Image from "next/image";
 import { useCart } from "../context/CartContext";
+import { toast } from "react-toastify";
 
 export default function ProductDetails({ product }) {
   const { isLoggedIn, setShowLoginForm, setRedirectPathAfterLogin } = useAuth();
@@ -48,7 +49,8 @@ export default function ProductDetails({ product }) {
       price: product.price.toString(),
       quantity: "1",
     });
-    alert("Proceeding to buy!");
+    //alert("Proceeding to buy!");
+    toast.info("Proceeding to buy!");
     router.push(`/payment?${params.toString()}`);
   };
 
@@ -69,7 +71,14 @@ export default function ProductDetails({ product }) {
       return;
     }
     addToCart(product);
-    alert("Product added to cart!");
+    //alert("Product added to cart!");
+    toast.success("Product added to cart...Redirecting to cart page.", {
+      autoClose: 1500,
+    });
+
+    setTimeout(() => {
+      router.push("/cart");
+    }, 1500);
   };
 
   return (
@@ -117,7 +126,7 @@ export default function ProductDetails({ product }) {
 
           <div className={styles.actions}>
             <button className={styles.addButton} onClick={handleAddToCart}>
-              Add to Cart
+              🛒Add to Cart
             </button>
             <button
               className={styles.addButton}

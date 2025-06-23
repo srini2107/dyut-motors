@@ -1,5 +1,7 @@
+"use client";
 import React, { Suspense } from "react";
 import Payment from "./Payment";
+
 
 export default function PaymentPage() {
   return (

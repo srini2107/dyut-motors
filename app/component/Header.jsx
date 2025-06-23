@@ -7,6 +7,7 @@ import { useAuth } from "../context/AuthContext";
 import LoginForm from "../login/LoginForm";
 import Image from "next/image";
 import { useRouter } from "next/navigation"; // Added router
+import { toast } from "react-toastify";
 
 export default function Header() {
   const {
@@ -83,6 +84,7 @@ export default function Header() {
     // setUserName("");
 
     logout(); // now this handles everything
+    toast.success("Your logged out successfully.");
     router.push("/"); // optional: redirect to home
   };
 
@@ -194,10 +196,15 @@ export default function Header() {
                     <div className={styles.dropdownLabel}>
                       My Account Details
                     </div>
-                    <Link href="/user-dashboard?tab=addresses" onClick={handleNav}>
+                    <Link
+                      href="/user-dashboard?tab=addresses"
+                      onClick={handleNav}
+                    >
                       My Addresses
                     </Link>
-                    <Link href="/user-dashboard?tab=orders" onClick={handleNav}>My Orders</Link>
+                    <Link href="/user-dashboard?tab=orders" onClick={handleNav}>
+                      My Orders
+                    </Link>
 
                     <a href="#">Saved Items</a>
                     <button

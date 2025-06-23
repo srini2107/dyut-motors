@@ -8,7 +8,7 @@
     text-align: center;
     font-family: "Segoe UI", sans-serif;
     background-color: #f8f9fa;
-    min-height: 100vh;
+    min-height: 75vh;
     height: 600px;
     display: flex;
     flex-direction: column;
