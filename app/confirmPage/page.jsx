@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import styles from "./ConfirmPage.module.css"; // Create a CSS module for styling
+import styles from "./confirmPage.module.css"; // Create a CSS module for styling
 
 export default function ConfirmPage() {
   const router = useRouter();
@@ -52,7 +52,9 @@ export default function ConfirmPage() {
       <h2>Confirm Your Order</h2>
 
       <div className={styles.addressCard}>
-        <p><strong>{address.full_name}</strong> ({address.type})</p>
+        <p>
+          <strong>{address.full_name}</strong> ({address.type})
+        </p>
         <p>{address.address_line1}</p>
         {address.address_line2 && <p>{address.address_line2}</p>}
         <p>
