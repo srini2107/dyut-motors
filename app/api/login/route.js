@@ -1,7 +1,8 @@
 import pool from "../../lib/db";
 import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken"; // Make sure to import like this
+import { SignJWT } from "jose"; // Instead of jsonwebtoken
+import { cookies } from "next/headers";
 
 export async function POST(req) {
   const body = await req.json();
@@ -38,16 +39,22 @@ export async function POST(req) {
       );
     }
 
-    const token = jwt.sign(
-      { id: user.id, name: user.name },
-      process.env.JWT_SECRET,
-      { expiresIn: "1d" }
-    );
+    // Create token using jose
+    const secret = new TextEncoder().encode(process.env.JWT_SECRET);
 
-    // ✅ Return user.name and set cookie
+    const token = await new SignJWT({
+      id: user.id,
+      name: user.name,
+    })
+      .setProtectedHeader({ alg: "HS256" })
+      .setIssuedAt()
+      .setExpirationTime("1d")
+      .sign(secret);
+
+    // Set cookie using NextResponse
     const response = NextResponse.json({
       success: true,
-      name: user.name, // 👈 return this for UI
+      name: user.name,
     });
 
     response.cookies.set("token", token, {

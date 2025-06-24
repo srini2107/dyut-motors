@@ -9,7 +9,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation"; // Added router
 import { toast } from "react-toastify";
 
-export default function Header() {
+export default function Header({ user }) {
   const {
     isLoggedIn,
     setShowLoginForm,
@@ -178,7 +178,7 @@ export default function Header() {
                   aria-controls="account-dropdown"
                 >
                   <i className="bi bi-person-circle"></i>{" "}
-                  {userName || "Account"} {/* Display user's name */}
+                  {user?.name ? `Welcome, ${user.name}` : "Account"} {/* Display user's name */}
                   <i
                     className={`bi ${
                       openDropdown === "account"
