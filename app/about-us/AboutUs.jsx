@@ -80,6 +80,19 @@ export default function AboutUs() {
             />
           </div>
         </section>
+        <section className={styles.highlightSection}>
+          <h2 className={styles.highlightTitle}>
+            Innovating the Future of Propulsion
+          </h2>
+          <p className={styles.highlightText}>
+            Dyut Motors is continuously developing design techniques and
+            investigating the next generation of propulsion systems. The
+            engineers are developing entirely new propulsion technologies in
+            addition to refining existing propeller designs. For a propeller
+            system to operate as intended in the end, choosing the appropriate
+            blade is essential.
+          </p>
+        </section>
       </main>
     </div>
   );

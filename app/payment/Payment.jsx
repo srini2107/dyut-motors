@@ -5,6 +5,7 @@ import styles from "./payment.module.css";
 import { useCart } from "../context/CartContext";
 import { useSearchParams, useRouter } from "next/navigation";
 import PaymentAddressModal from "../paymentAddressModal/PaymentAddressModal";
+import LoadingIndicator from "../loader/LoadingIndicator";
 
 import CardFormModal from "../cardFormModal/CardFormModal";
 import { toast } from "react-toastify";
@@ -22,6 +23,7 @@ const Payment = () => {
   const [showCardModal, setShowCardModal] = useState(false);
   const [cards, setCards] = useState([]);
   const [selectedCardId, setSelectedCardId] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [formData, setFormData] = useState({
     type: "shipping",
@@ -76,6 +78,8 @@ const Payment = () => {
         }
       } catch (err) {
         console.error("Failed to fetch cards:", err);
+      } finally {
+        setIsLoading(false); // ✅ stop loading once data arrives (or errors)
       }
     };
 
@@ -239,7 +243,9 @@ const Payment = () => {
             </>
           )}
 
-          {addresses.length === 0 && !showPaymentAddressModal && (
+          {isLoading ? (
+            <div className={styles.loading}>Loading...</div>
+          ) : addresses.length === 0 && !showPaymentAddressModal ? (
             <div className={styles.fallbackAdd}>
               <p>No address found. Please add one to continue.</p>
               <button
@@ -249,8 +255,7 @@ const Payment = () => {
                 + Add Address
               </button>
             </div>
-          )}
-
+          ) : null}
           {savedAddressId && (
             <>
               <h3 className={styles.sectionTitle}>Select Payment Method</h3>

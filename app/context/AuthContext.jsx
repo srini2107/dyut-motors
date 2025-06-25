@@ -22,7 +22,7 @@ export function AuthProvider({ children }) {
 
   const login = (token, name) => {
     localStorage.setItem("token", token);
-    //localStorage.setItem("userName", name); // persist username
+    localStorage.setItem("userName", name); // persist username
     setIsLoggedIn(true);
     setUserName(name);
   };
@@ -32,6 +32,7 @@ export function AuthProvider({ children }) {
     localStorage.removeItem("userName");
     setIsLoggedIn(false);
     setUserName("");
+    window.location.href = "/"; // Optional: redirect to homepage after logout
   };
 
   return (

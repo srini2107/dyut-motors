@@ -92,16 +92,16 @@ export default function LoginForm({
       }),
     });
     setIsLoading(false);
-    const data = await res.json();
+    const { token, name } = await res.json();
     if (res.ok) {
       toast.success("login success");
-      login(data.token, data.name); // ✅ update context and persist token+username
+      login(token, name); // ✅ update context and persist token+username
       router.push("/");
       if (redirectPathAfterLogin) {
         router.push(redirectPathAfterLogin);
         setRedirectPathAfterLogin(null); // Clear it
       }
-      onLoginSuccess && onLoginSuccess(data.name);
+      onLoginSuccess(token, name); // ✅ Called only on button click, not render
     } else {
       alert(data.error || "Login failed");
       // Optionally show "Forgot password?" here

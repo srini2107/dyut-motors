@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 export default function ProductDetails({ product }) {
   const { isLoggedIn, setShowLoginForm, setRedirectPathAfterLogin } = useAuth();
   const [pendingBuy, setPendingBuy] = useState(false);
+  const [pendingCart, setPendingCart] = useState(false);
   const [isZoomed, setIsZoomed] = useState(false);
 
   const router = useRouter();
@@ -24,6 +25,8 @@ export default function ProductDetails({ product }) {
       setShowLoginForm(true); // open login form
       return;
     }
+
+    setPendingBuy(true); // 👈 Start loading
     if (
       !product ||
       !product.id ||
@@ -54,11 +57,6 @@ export default function ProductDetails({ product }) {
     router.push(`/payment?${params.toString()}`);
   };
 
-  // const handleBuy = () => {
-  //   alert("Proceeding to buy!");
-  //   router.push("/payment");
-  // };
-
   const toggleZoom = () => {
     setIsZoomed(!isZoomed);
   };
@@ -70,6 +68,7 @@ export default function ProductDetails({ product }) {
       setShowLoginForm(true); // open login form
       return;
     }
+    setPendingCart(true); // 👈 Start loading
     addToCart(product);
     //alert("Product added to cart!");
     toast.success("Product added to cart...Redirecting to cart page.", {
@@ -125,18 +124,26 @@ export default function ProductDetails({ product }) {
           </div>
 
           <div className={styles.actions}>
-            <button className={styles.addButton} onClick={handleAddToCart}>
-              🛒Add to Cart
+            <button
+              className={styles.addButton}
+              onClick={handleAddToCart}
+              disabled={pendingCart}
+            >
+              {pendingCart ? "Adding to cart..." : "🛒 Add to Cart"}
             </button>
+
             <button
               className={styles.addButton}
               onClick={() => handleBuyNow(product)}
+              disabled={pendingBuy}
             >
-              Buy Now
+              {pendingBuy ? "Processing..." : "Buy Now"}
             </button>
+
             <button className={styles.addButton} onClick={handleBuyNow}>
               Add to wishlist
             </button>
+          
             <button
               className={styles.cancelButton}
               onClick={() => router.push("/products")}

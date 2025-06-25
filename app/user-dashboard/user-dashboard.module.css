@@ -123,6 +123,7 @@
   transition: background-color 0.3s ease;
   font-weight: 600;
   color: #111;
+  background-color: #f4c430;
 }
 
 .addButton {
@@ -271,7 +272,7 @@
 .actionButton {
   margin-top: 12px;
   padding: 8px 16px;
-  background-color: #f4c430;
+
   color: #000;
   border: none;
   border-radius: 6px;
@@ -280,9 +281,9 @@
   transition: background-color 0.3s ease;
 }
 
-.actionButton:hover {
+/* .actionButton:hover {
   background-color: #e2b900;
-}
+} */
 
 /* Responsive tweaks */
 @media (max-width: 768px) {

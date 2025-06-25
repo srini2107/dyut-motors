@@ -47,6 +47,22 @@
   color: #42a5f5;
 }
 
+.links {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: #ccc;
+}
+
+.links a {
+  color: #ccc;
+  text-decoration: none;
+  margin: 0 0.25rem;
+}
+
+.links a:hover {
+  text-decoration: underline;
+}
+
 @media (max-width: 760px) {
   .newFooterRow {
     flex-direction: column;

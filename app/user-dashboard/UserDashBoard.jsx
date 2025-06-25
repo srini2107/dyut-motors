@@ -17,7 +17,8 @@ export default function UserDashboard() {
   const [orders, setOrders] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [editingAddress, setEditingAddress] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingAddresses, setIsLoadingAddresses] = useState(true);
+  const [isLoadingOrders, setIsLoadingOrders] = useState(true);
 
   const [isEditing, setIsEditing] = useState(false);
   const [editAddress, setEditAddress] = useState(null);
@@ -72,6 +73,9 @@ export default function UserDashboard() {
         if (orderRes.ok) setOrders(orderData);
       } catch (err) {
         console.error("Error loading user data", err);
+      } finally {
+        setIsLoadingAddresses(false);
+        setIsLoadingOrders(false);
       }
     };
 
@@ -251,7 +255,11 @@ export default function UserDashboard() {
                     ➕ Add New Address
                   </button>
                 </div>
-                {addresses.length === 0 ? (
+                {isLoadingAddresses ? (
+                  <div className={styles.emptyState}>
+                    <p>Loading addresses...</p>
+                  </div>
+                ) : addresses.length === 0 ? (
                   <div className={styles.emptyState}>
                     <p>No addresses found. Please add one to proceed.</p>
                   </div>
@@ -312,7 +320,11 @@ export default function UserDashboard() {
             <>
               <div className={styles.section}>
                 <h2>Order History</h2>
-                {orders.length === 0 ? (
+                {isLoadingOrders ? (
+                  <div className={styles.emptyBox}>
+                    <p>Loading orders...</p>
+                  </div>
+                ) : orders.length === 0 ? (
                   <div className={styles.emptyBox}>
                     <p>No orders placed yet.</p>
                     <button

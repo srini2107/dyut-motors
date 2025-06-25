@@ -65,9 +65,9 @@ export default function Header({ user }) {
     setShowLoginForm((prev) => !prev);
     console.log("Login form toggled:", !showLoginForm); // Debugging
   };
-
+  
   function handleLoginSuccess(token, name) {
-    login(name, token);
+    login(token, name); // ✅ correct order
     router.push("/user-dashboard");
   }
 
@@ -178,7 +178,7 @@ export default function Header({ user }) {
                   aria-controls="account-dropdown"
                 >
                   <i className="bi bi-person-circle"></i>{" "}
-                  {user?.name ? `Welcome, ${user.name}` : "Account"} {/* Display user's name */}
+                  {userName ? userName : "Account"} {/* Display user's name */}
                   <i
                     className={`bi ${
                       openDropdown === "account"
