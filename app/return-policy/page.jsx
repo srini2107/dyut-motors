@@ -1,7 +1,7 @@
 // app/return-policy/page.jsx
 "use client";
 
-import styles from "./ReturnPolicyPage.module.css";
+import styles from "./returnPolicyPage.module.css";
 
 export default function ReturnPolicyPage() {
   return (

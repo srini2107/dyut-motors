@@ -1,7 +1,7 @@
 // app/shipping-policy/page.jsx
 "use client";
 
-import styles from "./ShippingPolicyPage.module.css";
+import styles from "./shippingPolicyPage.module.css";
 
 export default function ShippingPolicyPage() {
   return (
