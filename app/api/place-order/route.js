@@ -7,7 +7,7 @@ import pool from "../../lib/db";
 
 export async function POST(req) {
   try {
-    const cookieStore = await cookies(); // ✅ Await this
+    const cookieStore = cookies();
     const token = cookieStore.get("token")?.value;
 
     if (!token) {
@@ -19,35 +19,36 @@ export async function POST(req) {
 
     const {
       address_id,
-      items, // array of { product_id, quantity, price }
+      payment_method,
+      items,
       total_amount,
     } = await req.json();
 
-    console.log("Received order data:", { address_id, items, total_amount });
-
+    // ✅ Validation check
     if (
       !address_id ||
+      !payment_method ||               // ✅ check added
       !Array.isArray(items) ||
       items.length === 0 ||
       !total_amount
     ) {
       return NextResponse.json(
-        { error: "Missing order data" },
+        { error: "Missing order data or payment method" },
         { status: 400 }
       );
     }
 
     // 1. Insert into orders table
     const orderResult = await pool.query(
-      `INSERT INTO orders (user_id, address_id, total_amount)
-       VALUES ($1, $2, $3)
+      `INSERT INTO orders (user_id, address_id, total_amount, payment_method)
+       VALUES ($1, $2, $3, $4)
        RETURNING id`,
-      [user_id, address_id, total_amount]
+      [user_id, address_id, total_amount, payment_method]
     );
 
     const orderId = orderResult.rows[0].id;
 
-    // 2. Insert each item into order_items table
+    // 2. Insert into order_items
     const insertItems = items.map((item) =>
       pool.query(
         `INSERT INTO order_items (order_id, product_id, quantity, price)

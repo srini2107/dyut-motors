@@ -6,6 +6,7 @@ import { useAuth } from "../context/AuthContext";
 import AddressModal from "../addressModal/AddressModal";
 import { toast } from "react-toastify";
 import { useSearchParams, useRouter } from "next/navigation";
+import { useCart } from "../context/CartContext";
 
 export default function UserDashboard() {
   const searchParams = useSearchParams();
@@ -22,6 +23,8 @@ export default function UserDashboard() {
 
   const [isEditing, setIsEditing] = useState(false);
   const [editAddress, setEditAddress] = useState(null);
+  const { addToCart } = useCart();
+
   const [formData, setFormData] = useState({
     full_name: "",
     address_line1: "",
@@ -201,6 +204,34 @@ export default function UserDashboard() {
     }
   };
 
+  const handleRepeatOrder = async (order) => {
+    try {
+      const res = await fetch(`/api/invoice/${order.id}`);
+      const { items } = await res.json();
+
+      if (!items || items.length === 0) {
+        toast.error("No items found in this order.");
+        return;
+      }
+
+       items.forEach((item) => {
+        addToCart({
+          id: item.product_id,
+          name: item.name,
+          price: item.price,
+          image: item.image,
+          quantity: item.quantity,
+        });
+      });
+
+      toast.success("Order items added to cart!");
+      router.push("/cart");
+    } catch (err) {
+      toast.error("Failed to repeat order.");
+      console.error("Repeat order error:", err);
+    }
+  };
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.dashboardContainer}>
@@ -352,6 +383,20 @@ export default function UserDashboard() {
                       <div className={styles.row}>
                         <label>Total:</label>
                         <span>₹{Number(order.total_amount).toFixed(2)}</span>
+                      </div>
+                      <div className={styles.actions}>
+                        <button
+                          className={styles.actionButton}
+                          onClick={() => router.push(`/invoice/${order.id}`)}
+                        >
+                          📄 View Invoice
+                        </button>
+                        <button
+                          className={styles.actionButton}
+                          onClick={() => handleRepeatOrder(order)}
+                        >
+                          🔁 Repeat Order
+                        </button>
                       </div>
                     </div>
                   ))

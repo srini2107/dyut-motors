@@ -15,6 +15,10 @@ export default function LoginForm({
   const { login, redirectPathAfterLogin, setRedirectPathAfterLogin } =
     useAuth();
   const [step, setStep] = useState("login"); // 'signup' or 'login'
+  const [forgotEmail, setForgotEmail] = useState("");
+  const [showForgotModal, setShowForgotModal] = useState(false);
+  const [isSendingReset, setIsSendingReset] = useState(false);
+
   const [signupData, setSignupData] = useState({
     name: "",
     username: "",
@@ -43,30 +47,44 @@ export default function LoginForm({
   // Signup submit
   const handleSignup = async (e) => {
     e.preventDefault();
-    console.log("Signup form submitted"); // Debugging
+
     if (signupData.password !== signupData.confirmPassword) {
-      //alert("Passwords do not match!");
       toast.error("Passwords do not match!");
       return;
     }
-    setIsLoading(true);
-    // Call your signup API here
-    const res = await fetch("/api/signup", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(signupData),
-    });
-    setIsLoading(false);
-    if (res.ok) {
-      toast.success("Account created successfully...redirecting to login");
 
-      setTimeout(() => {
+    setIsLoading(true);
+
+    try {
+      const res = await fetch("/api/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(signupData),
+      });
+
+      let data = {};
+      try {
+        data = await res.json();
+      } catch {
+        const text = await res.text(); // useful for debugging
+        console.error("Non-JSON response:", text);
+      }
+
+      setIsLoading(false);
+
+      if (res.ok) {
+        toast.success(
+          "Signup successful! Please check your email to verify your account."
+        );
         setStep("login");
         onSignupSuccess && onSignupSuccess();
-      }, 2500);
-    } else {
-      const data = await res.json();
-      alert(data.error || "Signup failed");
+      } else {
+        toast.error(data?.error || "Signup failed.");
+      }
+    } catch (err) {
+      console.error("Network error:", err);
+      toast.error("Something went wrong. Please try again.");
+      setIsLoading(false);
     }
   };
 
@@ -74,37 +92,95 @@ export default function LoginForm({
   const handleLogin = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+
     if (!loginData.userOrEmail || !loginData.password) {
-      //alert("Please enter both username/email and password.");
       toast.error("Please enter both username/email and password.");
+      setIsLoading(false);
       return;
     }
-    console.log("Sending login data:", {
-      userOrEmail: loginData.userOrEmail,
-      password: loginData.password,
-    });
-    const res = await fetch("/api/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        userOrEmail: loginData.userOrEmail,
-        password: loginData.password,
-      }),
-    });
-    setIsLoading(false);
-    const { token, name } = await res.json();
-    if (res.ok) {
-      toast.success("login success");
-      login(token, name); // ✅ update context and persist token+username
+
+    try {
+      const res = await fetch("/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userOrEmail: loginData.userOrEmail,
+          password: loginData.password,
+        }),
+      });
+
+      setIsLoading(false);
+
+      let data = {};
+      try {
+        data = await res.json();
+      } catch {
+        toast.error("Unexpected response from server.");
+        return;
+      }
+
+      if (res.status === 403) {
+        toast.error("Please verify your email before logging in.");
+        return;
+      }
+
+      if (!res.ok) {
+        toast.error(data.error || "Login failed");
+        return;
+      }
+
+      const { token, name } = data;
+
+      toast.success("Login success");
+      login(token, name); // ✅ your context method
       router.push("/");
+
       if (redirectPathAfterLogin) {
         router.push(redirectPathAfterLogin);
-        setRedirectPathAfterLogin(null); // Clear it
+        setRedirectPathAfterLogin(null);
       }
-      onLoginSuccess(token, name); // ✅ Called only on button click, not render
-    } else {
-      alert(data.error || "Login failed");
-      // Optionally show "Forgot password?" here
+
+      onLoginSuccess(token, name);
+    } catch (err) {
+      console.error("Login error:", err);
+      toast.error("Network error. Please try again.");
+      setIsLoading(false);
+    }
+  };
+
+  const handleForgotPassword = async () => {
+    if (!forgotEmail) return toast.error("Enter your email address");
+
+    setIsSendingReset(true);
+
+    try {
+      const res = await fetch("/api/reset-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: forgotEmail }),
+      });
+
+      let data = {};
+      try {
+        const text = await res.text(); // get raw text
+        data = text ? JSON.parse(text) : {}; // safely parse if not empty
+      } catch (err) {
+        console.warn("No JSON body or invalid JSON:", err);
+      }
+
+      setIsSendingReset(false);
+
+      if (res.ok) {
+        toast.success("Reset link sent. Please check your email.");
+        setShowForgotModal(false);
+        setForgotEmail("");
+      } else {
+        toast.error(data.error || "Failed to send reset link.");
+      }
+    } catch (err) {
+      setIsSendingReset(false);
+      toast.error("Something went wrong. Please try again.");
+      console.error("Forgot password error:", err);
     }
   };
 
@@ -217,7 +293,7 @@ export default function LoginForm({
                 href="#"
                 onClick={(e) => {
                   e.preventDefault();
-                  alert("Forgot password flow here!");
+                  setShowForgotModal(true);
                 }}
               >
                 Forgot password?
@@ -227,6 +303,33 @@ export default function LoginForm({
         )}
         {children} {/* Render the close button or any additional content */}
       </div>
+      {showForgotModal && (
+        <div className={styles.modalOverlay}>
+          <div className={styles.modalContent}>
+            <h3>Reset Password</h3>
+            <input
+              type="email"
+              placeholder="Enter your registered email"
+              value={forgotEmail}
+              onChange={(e) => setForgotEmail(e.target.value)}
+              className={styles.input}
+            />
+            <button
+              onClick={handleForgotPassword}
+              disabled={isSendingReset}
+              className={styles.btn}
+            >
+              {isSendingReset ? "Sending..." : "Click to Reset Password"}
+            </button>
+            <button
+              onClick={() => setShowForgotModal(false)}
+              className={styles.cancelButton}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

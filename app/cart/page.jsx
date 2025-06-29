@@ -22,6 +22,14 @@ export default function CartPage() {
     router.push("/payment");
   };
 
+  // const removeFromCart = (idToRemove) => {
+  //   const updatedCart = cartItems.filter(
+  //     (item) => (item.id || item.product_id) !== idToRemove
+  //   );
+  //   setCartItems(updatedCart);
+  //   localStorage.setItem("cartItems", JSON.stringify(updatedCart));
+  // };
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.cartContainer}>
@@ -31,7 +39,14 @@ export default function CartPage() {
         ) : (
           <ul className={styles.cartItems}>
             {cartItems.map((item) => (
-              <li className={styles.cartItem} key={item.id}>
+              <li
+                className={styles.cartItem}
+                key={
+                  item.product_id ||
+                  item.id ||
+                  `${item.name}-${item.price}-${item.quantity}`
+                }
+              >
                 <img
                   src={item.image}
                   alt={item.name}
@@ -45,7 +60,7 @@ export default function CartPage() {
                 </div>
                 <button
                   className={styles.removeButton}
-                  onClick={() => removeFromCart(item.id)}
+                  onClick={() => removeFromCart(item.id || item.product_id)}
                 >
                   Remove
                 </button>

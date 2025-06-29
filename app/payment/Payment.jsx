@@ -23,7 +23,9 @@ const Payment = () => {
   const [showCardModal, setShowCardModal] = useState(false);
   const [cards, setCards] = useState([]);
   const [selectedCardId, setSelectedCardId] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [pendingOrder, setPendingOrder] = useState(null);
 
   const [formData, setFormData] = useState({
     type: "shipping",
@@ -62,7 +64,6 @@ const Payment = () => {
         if (res.ok) {
           const data = await res.json();
           setAddresses(data);
-          //if (data.length === 0) setShowAddressModal(true);
         }
       } catch (error) {
         console.error("Failed to fetch addresses:", error);
@@ -72,14 +73,32 @@ const Payment = () => {
     const fetchCards = async () => {
       try {
         const res = await fetch("/api/cards");
-        if (res.ok) {
-          const data = await res.json();
-          setCards(data);
+
+        if (!res.ok) {
+          throw new Error("Failed to fetch cards");
+        }
+
+        const data = await res.json();
+        setCards(data);
+
+        if (data.length === 1) {
+          // ✅ Auto-select the single card
+          setSelectedMethod("CARD");
+          setSelectedCardId(data[0].id);
+        } else if (data.length > 1) {
+          const prompted = localStorage.getItem("defaultCardPrompted");
+
+          if (!prompted) {
+            // ✅ Prompt user once to select a default card
+            toast.info("Please select your default card");
+            localStorage.setItem("defaultCardPrompted", "true");
+          }
         }
       } catch (err) {
         console.error("Failed to fetch cards:", err);
+        toast.error("Could not load saved cards");
       } finally {
-        setIsLoading(false); // ✅ stop loading once data arrives (or errors)
+        setIsLoading(false);
       }
     };
 
@@ -99,22 +118,86 @@ const Payment = () => {
     setSelectedMethod(method);
   };
 
-  const handlePlaceOrder = async () => {
-    if (!savedAddressId) return toast.warning("Please select or add address.");
-    if (!selectedMethod)
-      return toast.warning("Please select a payment method.");
+  // const handlePlaceOrder = async () => {
+  //   if (!savedAddressId) {
+  //     toast.warning("Please select or add an address.");
+  //     return;
+  //   }
+
+  //   if (!selectedMethod) {
+  //     toast.warning("Please select a payment method.");
+  //     return;
+  //   }
+
+  //   setIsPlacingOrder(true);
+
+  //   try {
+  //     const res = await fetch("/api/place-order", {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify({
+  //         address_id: savedAddressId,
+  //         payment_method: selectedMethod, // ✅ corrected key
+  //         items: itemsToDisplay,
+  //         total_amount: totalAmount,
+  //       }),
+  //     });
+
+  //     let data = {};
+  //     try {
+  //       data = await res.json(); // ✅ fail-safe JSON parsing
+  //     } catch (err) {
+  //       console.warn("Failed to parse response JSON:", err);
+  //     }
+
+  //     if (res.ok) {
+  //       toast.success("Order placed successfully!");
+  //       clearCart();
+  //       router.push(`/thankyou?orderId=${data.orderId}&total=${totalAmount}`);
+  //     } else {
+  //       toast.error(data.error || "Failed to place order.");
+  //     }
+  //   } catch (error) {
+  //     console.error("Order placement failed:", error);
+  //     toast.error("Something went wrong. Please try again.");
+  //   } finally {
+  //     setIsPlacingOrder(false);
+  //   }
+  // };
+
+  const handlePlaceOrder = () => {
+    if (!savedAddressId) return toast.warning("Please select or add an address.");
+    if (!selectedMethod) return toast.warning("Please select a payment method.");
+  
+    const selectedCard = cards.find((c) => c.id === selectedCardId);
+  
+    const enrichedItems = itemsToDisplay.map((item) => ({
+      product_id: item.product_id || item.id, // Fallback to item.id if product_id is missing
+      name: item.name,
+      quantity: item.quantity,
+      price: item.price,
+    }));
+  
+    setPendingOrder({
+      address_id: savedAddressId,
+      payment_method: selectedMethod,
+      card_last4: selectedCard?.last4 || null,
+      items: enrichedItems,
+      total_amount: totalAmount,
+    });
+  
+    setShowConfirmModal(true);
+  };
+
+  const submitConfirmedOrder = async () => {
+    if (!pendingOrder) return;
     setIsPlacingOrder(true);
 
     try {
       const res = await fetch("/api/place-order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          address_id: savedAddressId,
-          paymentMethod: selectedMethod,
-          items: itemsToDisplay,
-          total_amount: totalAmount,
-        }),
+        body: JSON.stringify(pendingOrder),
       });
 
       const data = await res.json();
@@ -126,11 +209,12 @@ const Payment = () => {
       } else {
         toast.error(data.error || "Failed to place order");
       }
-    } catch (error) {
-      console.error("Order placement failed:", error);
+    } catch (err) {
+      console.error("Order placement failed:", err);
       toast.error("Something went wrong.");
     } finally {
       setIsPlacingOrder(false);
+      setShowConfirmModal(false);
     }
   };
 
@@ -260,7 +344,7 @@ const Payment = () => {
             <>
               <h3 className={styles.sectionTitle}>Select Payment Method</h3>
               <div className={styles.section}>
-                {["card", "netbanking", "upi"].map((method) => (
+                {["CARD", "NET_BANKING", "UPI"].map((method) => (
                   <label key={method}>
                     <input
                       type="radio"
@@ -268,15 +352,15 @@ const Payment = () => {
                       value={method}
                       onChange={() => handlePaymentSelect(method)}
                     />
-                    {method === "card"
+                    {method === "CARD"
                       ? "Credit/Debit Card"
-                      : method === "netbanking"
+                      : method === "NET_BANKING"
                       ? "Net Banking"
                       : "UPI"}
                   </label>
                 ))}
 
-                {selectedMethod === "card" && (
+                {selectedMethod === "CARD" && (
                   <div className={styles.cardMethodBox}>
                     {cards.length > 0 && (
                       <div className={styles.cardList}>
@@ -285,8 +369,9 @@ const Payment = () => {
                             <input
                               type="radio"
                               name="savedCard"
-                              value={card.id}
-                              onChange={() => setSelectedCardId(card.id)}
+                              value={`card-${card.id}`}
+                              checked={selectedCardId === card.id} // ✅ keep it checked if selected
+                              onChange={() => setSelectedCardId(card.id)} // ✅ update state
                             />
                             <div className={styles.cardInfo}>
                               <div className={styles.cardText}>
@@ -374,7 +459,40 @@ const Payment = () => {
           </button>
         </div>
       </div>
+      {showConfirmModal && (
+        <div className={styles.modalBackdrop}>
+          <div className={styles.modalBox}>
+            <h3>Confirm Your Order</h3>
+            <p>
+              <strong>Item(s):</strong>{" "}
+              {itemsToDisplay.map((i) => i.name).join(", ")}
+            </p>
+            <p>
+              <strong>Total Amount:</strong> ₹{totalAmount}
+            </p>
+            <p>
+              <strong>Payment via:</strong> {selectedMethod}{" "}
+              {selectedMethod === "CARD" &&
+                `ending in ${pendingOrder?.card_last4}`}
+            </p>
 
+            <div className={styles.modalActions}>
+              <button
+                className={styles.confirmBtn}
+                onClick={submitConfirmedOrder}
+              >
+                Confirm & Place Order
+              </button>
+              <button
+                className={styles.cancelBtn}
+                onClick={() => setShowConfirmModal(false)}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       <PaymentAddressModal
         isOpen={showPaymentAddressModal}
         onClose={() => setShowPaymentAddressModal(false)}

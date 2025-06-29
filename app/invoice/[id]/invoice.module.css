@@ -1,0 +1,163 @@
+/* invoice.module.css */
+.container {
+  background: #fafafa;
+}
+.invoiceWrapper {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 24px;
+  background-color: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  font-family: "Segoe UI", sans-serif;
+  color: #2d3748;
+}
+
+.invoiceWrapper h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+  border-bottom: 2px solid #edf2f7;
+  padding-bottom: 6px;
+}
+
+.meta {
+  font-size: 14px;
+  margin-bottom: 4px;
+  color: #4a5568;
+}
+
+.itemsList {
+  list-style: none;
+  padding: 0;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border-top: 1px solid #e2e8f0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.itemRow {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  font-size: 15px;
+  border-bottom: 1px dashed #e2e8f0;
+}
+
+.itemRow:last-child {
+  border-bottom: none;
+}
+
+.total {
+  font-size: 18px;
+  font-weight: bold;
+  text-align: right;
+  margin-top: 20px;
+  color: #1a202c;
+}
+
+.downloadBtn {
+  margin-top: 24px;
+  padding: 10px 16px;
+  background-color: #ffd700;
+  color: black;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.downloadBtn:hover {
+  background-color: #cbd5e0;
+}
+
+.loading,
+.error {
+  text-align: center;
+  font-size: 16px;
+  padding: 20px;
+  color: #718096;
+}
+
+.backBtn {
+  margin-top: 16px;
+  padding: 10px 16px;
+  background-color: #ffd700;
+  color: #2d3748;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-right: 10px;
+
+}
+
+.backBtn:hover {
+  background-color: #cbd5e0;
+}
+.fixedBottomRight {
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+.emptyState {
+  background: #fff;
+  border: 1px dashed #ccc;
+  border-radius: 8px;
+  padding: 20px;
+  margin-top: 20px;
+  text-align: center;
+  font-size: 16px;
+  color: #666;
+}
+
+.itemsList {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0;
+}
+
+.itemRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+  padding: 10px 0;
+}
+
+.itemDetails {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.productImage {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.productName {
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.productQty {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.price {
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.emptyState {
+  color: #888;
+  padding: 10px;
+}
